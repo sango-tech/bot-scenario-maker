@@ -1,6 +1,12 @@
-export interface IQuestion {
-  id: string
-  uniqueId: string
-  title: string
-  answers: []
+export interface IAnswer {
+  id: string;
+  title: string;
+}
+
+export interface ICard {
+  id: string;
+  uniqueId: string;
+  title: string;
+  titleBadge?: string;
+  answers: IAnswer[];
 }

@@ -7,7 +7,26 @@
 
     <script>
       const container = document.getElementById('botFlowContainer');
-      const chatbotFlow = window.ChatBotFlowsMaker();
+      const chatbotFlow = Sango.ChatBotFlowsMaker();
+      console.log(chatbotFlow, 'chatbotFlow')
+      chatbotFlow.addCard({
+        id: '1',
+        uniqueId: '1',
+        title: 'Question #1',
+        titleBadge: 'QA',
+        answers: [
+          {
+            id: '1',
+            title: 'YES'
+          },
+          {
+            id: '2',
+            title: 'NO'
+          },
+        ]
+      })
+
+      chatbotFlow.render();
     </script>
   </body>
 </html>
