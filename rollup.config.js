@@ -28,9 +28,6 @@ export default {
     }),
     commonjs({
       include: 'node_modules/**',
-      // namedExports: {
-      //   'node_modules/plain-draggable/plain-draggable.min.js': ['PlainDraggable']
-      // }
       dynamicRequireTargets: [
         'node_modules/plain-draggable/plain-draggable.min.js'
       ]
