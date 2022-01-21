@@ -1,0 +1,25 @@
+{
+    "editor.rulers": [
+        {
+            "column": 120,
+            "color": "#424142"
+        },
+    ],
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "files.trimTrailingWhitespace": true,
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "files.insertFinalNewline": true
+    },
+    "[scss]": {
+        "editor.formatOnSave": true,
+        "files.insertFinalNewline": true
+    },
+    "workbench.colorCustomizations": {
+        "tab.activeBackground": "#76715c"
+    },
+    "less.lint.unknownAtRules": "ignore",
+    "scss.validate": true,
+}

@@ -1,0 +1,53 @@
+{
+  "name": "bot-flow-maker",
+  "version": "1.0.0",
+  "description": "Using leaderline to make chat bot flows",
+  "main": "./cdn/js/sango.bot-flows-maker.min.js",
+  "scripts": {
+    "start": "npm-run-all -p build:watch docs",
+    "build": "npm-run-all build:bundle build:minify && rm ./cdn/public/js/sango.bot-flows-maker.js",
+    "watch": "yarn build:bundle --watch",
+    "build:bundle": "rollup -c",
+    "build:minify": "uglifyjs -c -m --comments -o ./cdn/js/sango.bot-flows-maker.min.js -- ./cdn/public/js/sango.bot-flows-maker.js",
+    "prebuild": "yarn clean",
+    "clean": "rm -rf .rpt2_cache",
+    "lint": "tslint -c tslint.json \"src/**/*.ts\"",
+    "format": "npm-run-all format:tslint format:prettier",
+    "format:tslint": "yarn lint --fix",
+    "format:prettier": "prettier --write \"src/**/*\" \"*.md\""
+  },
+  "author": "Sango Technologies",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "24.0.9",
+    "@types/jquery": "^3.5.9",
+    "browser-sync": "2.26.3",
+    "cpx": "1.5.0",
+    "dts-bundle": "0.7.3",
+    "node-sass": "^7.0.0",
+    "npm-run-all": "4.1.5",
+    "postcss": "^8.4.4",
+    "prettier": "1.16.4",
+    "rollup": "1.4.1",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-typescript2": "0.19.3",
+    "rollup-watch": "4.3.1",
+    "sass": "^1.44.0",
+    "tslint": "5.13.1",
+    "typescript": "3.3.3333",
+    "uglify-es": "3.3.9"
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "printWidth": 100,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "bracketSpacing": true,
+    "arrowParens": "always"
+  },
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}

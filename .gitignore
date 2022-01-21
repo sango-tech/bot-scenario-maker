@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.DS_Store
+# C extensions
+*.so
+output.log
+supervisord.log
+data/db
+data/redis
+data/db.unittest
+*.bk
+*.map
+cached/*.html
+!cached/index.html
+venv
+*.log
+dist
+.rpt2_cache/
+node_modules/
+sango.bot-flows-maker.js
