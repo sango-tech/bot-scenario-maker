@@ -1,6 +1,7 @@
 export interface IAnswer {
   id: string;
   title: string;
+  nextUniqueIds: string[];
 }
 
 export interface ICard {
@@ -8,5 +9,7 @@ export interface ICard {
   uniqueId: string;
   title: string;
   titleBadge?: string;
+  left: number;
+  top: number;
   answers: IAnswer[];
 }

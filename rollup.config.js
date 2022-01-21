@@ -1,5 +1,7 @@
 import typescript from 'rollup-plugin-typescript2';
 import postcss from 'rollup-plugin-postcss'
+import commonjs from 'rollup-plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve';
 
 const pkg = require('./package.json');
 
@@ -18,10 +20,21 @@ export default {
   plugins: [
     typescript({
       useTsconfigDeclarationDir: true,
+      objectHashIgnoreUnknownHack: true,
       sourceMap: false,
     }),
     postcss({
       plugins: []
-    })
+    }),
+    commonjs({
+      include: 'node_modules/**',
+      // namedExports: {
+      //   'node_modules/plain-draggable/plain-draggable.min.js': ['PlainDraggable']
+      // }
+      dynamicRequireTargets: [
+        'node_modules/plain-draggable/plain-draggable.min.js'
+      ]
+    }),
+    resolve({}),
   ],
 };

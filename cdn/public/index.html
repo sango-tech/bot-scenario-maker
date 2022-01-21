@@ -3,11 +3,11 @@
   <body>
     <script src="/js/sango.bot-flows-maker.js"></script>
 
-    <div id="botFlowContainer"></div>
+    <div id="botFlowContainer" style="height: 100vh;"></div>
 
     <script>
       const container = document.getElementById('botFlowContainer');
-      const chatbotFlow = Sango.ChatBotFlowsMaker();
+      const chatbotFlow = Sango.ChatBotFlowsMaker(container);
       console.log(chatbotFlow, 'chatbotFlow')
       chatbotFlow.addCard({
         id: '1',

@@ -15,6 +15,30 @@ export default class Card {
     return this.card.uniqueId;
   }
 
+  get el() {
+    return document.getElementById(this.card.uniqueId);
+  }
+
+  get answers() {
+    return this.card.answers || [];
+  }
+
+  getAnswerUniqueId(answer: IAnswer) {
+    return `${this.card.id}-${answer.id}`;
+  }
+
+  getAnswerNodeEl(answer: IAnswer) {
+    return document.getElementById(this.getAnswerUniqueId(answer));
+  }
+
+  setLeft(num: number) {
+    this.card.left = num;
+  }
+
+  setTop(num: number) {
+    this.card.top = num;
+  }
+
   async render() {
     this.logger.log('Card:render');
     this.renderHTML();
