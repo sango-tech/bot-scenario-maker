@@ -50,6 +50,9 @@
       position: absolute;
       background: cornflowerblue;
       display: none;
+      &:hover {
+        background: darkmagenta;
+      }
       &--0 {
         left: -5px;
         top: -5px;

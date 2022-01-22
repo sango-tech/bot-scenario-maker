@@ -43,7 +43,14 @@ export class ChatBotFlowsMaker {
         const nextCards = answer.nextCards || [];
 
         for (const nextCard of nextCards) {
-          const toEl = document.getElementById(nextCard.uniqueId);
+          const nextCardObject = this.getNextCardObject(nextCard.uniqueId);
+          if (!nextCardObject) {
+            this.logger.warn(`Unknown next card uniqueId: ${nextCard.uniqueId}`);
+            continue;
+          }
+
+          const toEl = nextCardObject.getCardNodeEl(nextCard.nodeIndex);
+
           const line = new LeaderLine(fromEl, toEl, {
             middleLabel: (LeaderLine as any).captionLabel(answer.title),
             lineId: `${cardObject.getAnswerUniqueId(answer)}-${nextCard.uniqueId}`,
@@ -83,5 +90,9 @@ export class ChatBotFlowsMaker {
         continue;
       }
     }
+  };
+
+  getNextCardObject = (uniqueId: string) => {
+    return this.cardsObjectList.find((item) => item.uniqueId === uniqueId);
   };
 }

@@ -11,6 +11,10 @@ export default class Card {
     this.card = card;
   }
 
+  get uniqueId() {
+    return this.card.uniqueId;
+  }
+
   get elementId() {
     return this.card.uniqueId;
   }
@@ -37,6 +41,10 @@ export default class Card {
 
   getCardNodeId(index: number) {
     return `card-node-${this.card.uniqueId}-${index}`;
+  }
+
+  getCardNodeEl(index: number) {
+    return document.getElementById(this.getCardNodeId(index));
   }
 
   getAnswerNodeEl(answer: IAnswer) {
