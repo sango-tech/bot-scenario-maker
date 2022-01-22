@@ -2725,11 +2725,6 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-leader-line@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/leader-line/-/leader-line-1.0.7.tgz#c197268d8346d73f7ac10fe568d677d119c656c1"
-  integrity sha512-PhJpQLV7XychSIuGPD0TEqR9PgRYBbrhReaOcmHFOVtTw4dWKfUMAtOb7UP7xTsoib6sFzq2giQeOUHy7LCuJQ==
-
 lilconfig@^2.0.3:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/lilconfig/-/lilconfig-2.0.4.tgz#f4507d043d7058b380b6a8f5cb7bcd4b34cee082"
@@ -3575,11 +3570,6 @@ pinkie@^2.0.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
   integrity sha1-clVrgM+g1IqXToDnckjoDtT3+HA=
-
-plain-draggable@^2.5.14:
-  version "2.5.14"
-  resolved "https://registry.yarnpkg.com/plain-draggable/-/plain-draggable-2.5.14.tgz#5a93a076c9b12f78d5fec077b60a47b28e2bb2c4"
-  integrity sha512-jJUkj/2lQm6Z3vkbPCYIDiDiOG5aXic18OPld8o+hJ+ZDcuODVX1mKnRoePDugP+/KO/v9FALuQd+rhr+LLJ5w==
 
 portscanner@2.1.1:
   version "2.1.1"

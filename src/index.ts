@@ -5,11 +5,12 @@ import { ICard } from './types';
 
 import PlainDraggable from './plugins/plain-draggable.min';
 import LeaderLine from './plugins/leader-line.min';
+import MouseDrawer from './components/mouseDrawer';
 
 export class ChatBotFlowsMaker {
   logger = new Logger();
   container: any;
-  cardsObjectList: Card[] = [];
+  cardObjects: Card[] = [];
   lines: any[] = [];
 
   constructor(container: any) {
@@ -21,23 +22,24 @@ export class ChatBotFlowsMaker {
   addCard = (item: ICard) => {
     this.logger.log('Added card', item);
     const card = new Card(this.container, item);
-    this.cardsObjectList.push(card);
+    this.cardObjects.push(card);
 
     return this;
   };
 
   render = () => {
-    for (let i = 0; i < this.cardsObjectList.length; i++) {
-      const cardObj = this.cardsObjectList[i];
+    for (let i = 0; i < this.cardObjects.length; i++) {
+      const cardObj = this.cardObjects[i];
       cardObj.render();
     }
 
     this.connectObjectsByLines();
     this.initDraggableCards();
+    this.registerMouseDrawer();
   };
 
   connectObjectsByLines = () => {
-    for (const cardObject of this.cardsObjectList) {
+    for (const cardObject of this.cardObjects) {
       for (const answer of cardObject.answers) {
         const fromEl = cardObject.getAnswerNodeEl(answer);
         const nextCards = answer.nextCards || [];
@@ -53,7 +55,7 @@ export class ChatBotFlowsMaker {
 
           const line = new LeaderLine(fromEl, toEl, {
             middleLabel: (LeaderLine as any).captionLabel(answer.title),
-            lineId: `${cardObject.getAnswerUniqueId(answer)}-${nextCard.uniqueId}`,
+            lineId: `${cardObject.getAnswerNodeUniqueId(answer)}-${nextCard.uniqueId}`,
           });
 
           this.lines.push(line);
@@ -63,7 +65,7 @@ export class ChatBotFlowsMaker {
   };
 
   initDraggableCards = () => {
-    for (const cardObject of this.cardsObjectList) {
+    for (const cardObject of this.cardObjects) {
       const fromEl = cardObject.el;
       new PlainDraggable(fromEl, {
         handle: cardObject.moveControlEl,
@@ -92,7 +94,11 @@ export class ChatBotFlowsMaker {
     }
   };
 
+  registerMouseDrawer = () => {
+    new MouseDrawer(this.container, this.cardObjects).init();
+  };
+
   getNextCardObject = (uniqueId: string) => {
-    return this.cardsObjectList.find((item) => item.uniqueId === uniqueId);
+    return this.cardObjects.find((item) => item.uniqueId === uniqueId);
   };
 }

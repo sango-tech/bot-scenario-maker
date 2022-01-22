@@ -9,6 +9,17 @@
     height: 10px;
     background: orange;
     border-radius: 100%;
+    cursor: pointer;
+    &:hover {
+      background: red;
+      transform: scale(1.2);
+    }
+  }
+  &-draw-moving-node {
+    position: absolute;
+    opacity: 0;
+    width: 1;
+    height: 1;
   }
   &__card {
     $card: &;
@@ -19,7 +30,7 @@
     &:hover {
       #{$card} {
         &__node {
-          display: block;
+          opacity: 1;
         }
       }
     }
@@ -49,10 +60,7 @@
     &__node {
       position: absolute;
       background: cornflowerblue;
-      display: none;
-      &:hover {
-        background: darkmagenta;
-      }
+      opacity: 0;
       &--0 {
         left: -5px;
         top: -5px;

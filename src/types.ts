@@ -7,7 +7,6 @@ export interface IAnswer {
   id: string;
   title: string;
   nextCards: INextCard[];
-  nodeIndex: number;
 }
 
 export interface ICard {
@@ -18,4 +17,14 @@ export interface ICard {
   left: number;
   top: number;
   answers: IAnswer[];
+}
+
+export interface IDrawClickedNodeFrom {
+  uniqueId: string;
+  answerId: string;
+}
+
+export interface IDrawClickedNodeTo {
+  uniqueId: string;
+  nodeIndex: number;
 }

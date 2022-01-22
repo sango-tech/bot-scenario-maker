@@ -18,7 +18,7 @@ export default class SangoCache {
 
   public get(key: string) {
     if (!key) {
-      return
+      return;
     }
 
     return (window as any)[this.namespace][key];

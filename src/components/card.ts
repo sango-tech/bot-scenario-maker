@@ -35,8 +35,8 @@ export default class Card {
     return this.card.answers || [];
   }
 
-  getAnswerUniqueId(answer: IAnswer) {
-    return `answer-${this.card.uniqueId}-${answer.id}`;
+  getAnswerNodeUniqueId(answer: IAnswer) {
+    return `answer-node-${this.card.uniqueId}-${answer.id}`;
   }
 
   getCardNodeId(index: number) {
@@ -48,7 +48,7 @@ export default class Card {
   }
 
   getAnswerNodeEl(answer: IAnswer) {
-    return document.getElementById(this.getAnswerUniqueId(answer));
+    return document.getElementById(this.getAnswerNodeUniqueId(answer));
   }
 
   setLeft(num: number) {
@@ -66,7 +66,7 @@ export default class Card {
 
   renderHTML() {
     const html = `
-    <div class="sgbmk__card" id="${this.elementId}">
+    <div class="sgbmk__card" id="${this.elementId}" style="left: ${this.card.left}px; top: ${this.card.top}px;">
       <div class="sgbmk__card__title" id="${this.moveControlElementId}">
         <span class="sgbmk__card__title__badge">${this.card.titleBadge}</span>
         ${this.card.title}
@@ -93,7 +93,9 @@ export default class Card {
         <div class="sgbmk__card__answers__item">
           <div class="sgbmk__card__answers__item__title sgbmk-ellipsis">${answer.title}</div>
           <div class="sgbmk__card__answers__item__node sgbmk-node"
-            id="${this.getAnswerUniqueId(answer)}">
+            data-card-unique-id="${this.card.uniqueId}"
+            data-answer-id="${answer.id}"
+            id="${this.getAnswerNodeUniqueId(answer)}">
           </div>
         </div>
       `;
