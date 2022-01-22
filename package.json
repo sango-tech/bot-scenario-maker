@@ -28,14 +28,14 @@
     "node-sass": "^7.0.0",
     "npm-run-all": "4.1.5",
     "postcss": "^8.4.4",
-    "prettier": "1.16.4",
+    "prettier": "^2.5.1",
     "rollup": "^2.65.0",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-typescript2": "0.19.3",
     "rollup-watch": "4.3.1",
     "sass": "^1.44.0",
     "tslint": "5.13.1",
-    "typescript": "3.3.3333",
+    "typescript": "^4.5.5",
     "uglify-es": "3.3.9"
   },
   "dependencies": {

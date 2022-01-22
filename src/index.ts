@@ -1,7 +1,7 @@
 import './assets/scss/styles.scss';
 import Card from './components/card';
 import Logger from './utils/logger';
-import { ICard } from './types';
+import { IAnswer, ICard, INextCard } from './types';
 
 import PlainDraggable from './plugins/plain-draggable.min';
 import LeaderLine from './plugins/leader-line.min';
@@ -11,7 +11,7 @@ export class ChatBotFlowsMaker {
   logger = new Logger();
   container: any;
   cardObjects: Card[] = [];
-  lines: any[] = [];
+  lines: Record<string, any> = {};
 
   constructor(container: any) {
     this.logger.debug('Init...');
@@ -39,6 +39,7 @@ export class ChatBotFlowsMaker {
   };
 
   connectObjectsByLines = () => {
+    this.removeAllLines();
     for (const cardObject of this.cardObjects) {
       for (const answer of cardObject.answers) {
         const fromEl = cardObject.getAnswerNodeEl(answer);
@@ -52,13 +53,14 @@ export class ChatBotFlowsMaker {
           }
 
           const toEl = nextCardObject.getCardNodeEl(nextCard.nodeIndex);
+          const lineId = this.getLineId(cardObject, answer, nextCard);
 
           const line = new LeaderLine(fromEl, toEl, {
+            lineId,
             middleLabel: (LeaderLine as any).captionLabel(answer.title),
-            lineId: `${cardObject.getAnswerNodeUniqueId(answer)}-${nextCard.uniqueId}`,
           });
 
-          this.lines.push(line);
+          this.lines[lineId] = line;
         }
       }
     }
@@ -85,7 +87,7 @@ export class ChatBotFlowsMaker {
   };
 
   reDrawLinePosition = () => {
-    for (const line of this.lines) {
+    for (const line of Object.values(this.lines)) {
       try {
         line.position();
       } catch (e) {
@@ -94,11 +96,29 @@ export class ChatBotFlowsMaker {
     }
   };
 
+  removeAllLines = () => {
+    for (const line of Object.values(this.lines)) {
+      try {
+        line.remove();
+      } catch (e) {
+        continue;
+      }
+    }
+
+    this.lines = {};
+  };
+
   registerMouseDrawer = () => {
-    new MouseDrawer(this.container, this.cardObjects).init();
+    const mouseDrawer = new MouseDrawer(this.container, this.cardObjects);
+    mouseDrawer.init();
+    mouseDrawer.setDrawDoneCallback(this.connectObjectsByLines);
   };
 
   getNextCardObject = (uniqueId: string) => {
     return this.cardObjects.find((item) => item.uniqueId === uniqueId);
+  };
+
+  getLineId = (cardObject: Card, answer: IAnswer, nextCard: INextCard) => {
+    return `line-${cardObject.uniqueId}-${answer.id}-${nextCard.uniqueId}-${nextCard.nodeIndex}`;
   };
 }

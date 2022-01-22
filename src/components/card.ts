@@ -108,7 +108,10 @@ export default class Card {
     let html = '';
     for (let i = 0; i < 8; i++) {
       html += `<span class="sgbmk__card__node sgbmk__card__node--${i} sgbmk-node"
-      id="${this.getCardNodeId(i)}"></span>`;
+      id="${this.getCardNodeId(i)}"
+      data-card-unique-id="${this.card.uniqueId}"
+      data-node-index="${i}"
+      ></span>`;
     }
 
     return html;
