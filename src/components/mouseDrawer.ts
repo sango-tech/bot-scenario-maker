@@ -1,4 +1,4 @@
-import { IDrawClickedNodeFrom } from 'src/types';
+import { IDrawClickedNodeFrom, ILine } from 'src/types';
 import Logger from 'src/utils/logger';
 import Card from './card';
 import LeaderLine from '../plugins/leader-line.min';
@@ -12,14 +12,22 @@ export default class MouseDrawer {
   clickedNodeFrom: IDrawClickedNodeFrom | null = null;
   movingLine: any = null;
   drawDoneCallback!: Function;
+  private lines: ILine = {};
 
-  constructor(container: any, cardObjects: Card[]) {
-    this.cardObjects = cardObjects;
+  constructor(container: any) {
     this.container = container;
   }
 
   get endMovingNodeId() {
     return 'sgbmk-end-moving-node';
+  }
+
+  setCardObjects(cardObjects: Card[]) {
+    this.cardObjects = cardObjects;
+  }
+
+  setLines(lines: ILine) {
+    this.lines = lines;
   }
 
   setDrawDoneCallback(callback: Function) {
@@ -51,6 +59,8 @@ export default class MouseDrawer {
       this.movingLine.remove();
       this.movingLine = null;
     }
+
+    this.reDrawnAll();
   };
 
   init = () => {
@@ -59,9 +69,16 @@ export default class MouseDrawer {
     return this;
   };
 
-  addMovingLine = () => {
+  addMovingLine = (event: MouseEvent) => {
     const fromEl = this.getAnswerNodeEl();
     const toEl = document.getElementById(this.endMovingNodeId);
+    if (!fromEl || !toEl) {
+      return;
+    }
+
+    toEl.style.left = `${event.clientX}px`;
+    toEl.style.top = `${event.clientY}px`;
+
     if (!fromEl || !toEl) {
       this.removeDrawingMode();
       return;
@@ -94,40 +111,46 @@ export default class MouseDrawer {
 
       // Clicked to answer node
       if (target.id.indexOf('answer-node') >= 0) {
-        that.handleAnswerNodeClick(target);
+        that.handleAnswerNodeClick(event);
         return;
       }
 
       // Clicked to answer node
       if (target.id.indexOf('card-node') >= 0) {
-        that.handleEndNodeClick(event.target as HTMLElement);
+        that.handleEndNodeClick(event);
+        return;
       }
 
-      // Remove moving line anyway
-      if (that.clickedNodeFrom) {
-        that.removeDrawingMode();
-      }
+      that.removeDrawingMode();
     });
   };
 
-  handleAnswerNodeClick = (target: HTMLElement) => {
+  handleAnswerNodeClick = (event: MouseEvent) => {
     if (this.clickedNodeFrom) {
       this.removeDrawingMode();
       return;
     }
 
+    const target = event.target as any;
     this.logger.log('Answer node clicked');
-    // @ts-ignore
-    this.setClickedNodeFrom(target.getAttribute('data-card-unique-id'), target.getAttribute('data-answer-id'));
-    this.addMovingLine();
-  };
-
-  // User click to end node to connect answer to next card
-  handleEndNodeClick = (endNodeEl: HTMLElement) => {
-    if (!this.clickedNodeFrom) {
+    const fromUniqueId = target.getAttribute('data-card-unique-id');
+    const fromAnswerId = target.getAttribute('data-answer-id');
+    if (!fromUniqueId || !fromAnswerId) {
       return;
     }
 
+    this.setClickedNodeFrom(fromUniqueId, fromAnswerId);
+    this.addMovingLine(event);
+  };
+
+  // User click to end node to connect answer to next card
+  handleEndNodeClick = (event: MouseEvent) => {
+    if (!this.clickedNodeFrom) {
+      this.handleInitMoveExistLine(event);
+      return;
+    }
+
+    const endNodeEl = event.target as HTMLElement;
     const nextUniqueId = endNodeEl.getAttribute('data-card-unique-id');
     const nodeIndex = endNodeEl.getAttribute('data-node-index');
     if (!nextUniqueId || !nodeIndex) {
@@ -141,6 +164,29 @@ export default class MouseDrawer {
     }
 
     this.onDrawDone(nextUniqueId, parseInt(nodeIndex));
+  };
+
+  // User click into end line and move to other card or node
+  handleInitMoveExistLine = (event: MouseEvent) => {
+    const endNodeEl = event.target as HTMLElement;
+
+    const fromUniqueId = endNodeEl.getAttribute('data-from-card-unique-id');
+    const fromAnswerId = endNodeEl.getAttribute('data-from-answer-id');
+    const lineId = endNodeEl.getAttribute('data-line-id');
+    if (!fromUniqueId || !fromAnswerId || !lineId) {
+      this.logger.log('Not clicked on end exists line');
+      return;
+    }
+
+    this.setClickedNodeFrom(fromUniqueId, fromAnswerId);
+    this.addMovingLine(event);
+
+    // Remove current line before moving
+    const currentLine = this.lines[lineId];
+    console.log(this.lines, 'this.lines');
+    if (currentLine) {
+      currentLine.remove();
+    }
   };
 
   onDrawDone = (nextUniqueId: string, nodeIndex: number) => {
@@ -167,9 +213,8 @@ export default class MouseDrawer {
       return cardObject;
     });
 
-    if (this.drawDoneCallback) {
-      this.drawDoneCallback();
-    }
+    this.reDrawnAll();
+    this.removeDrawingMode();
   };
 
   getClickedFromCardObject = () => {
@@ -187,4 +232,10 @@ export default class MouseDrawer {
       this.movingLine.position();
     });
   };
+
+  reDrawnAll() {
+    if (this.drawDoneCallback) {
+      this.drawDoneCallback();
+    }
+  }
 }

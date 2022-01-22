@@ -28,3 +28,5 @@ export interface IDrawClickedNodeTo {
   uniqueId: string;
   nodeIndex: number;
 }
+
+export type ILine = Record<string, any>;

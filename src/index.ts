@@ -1,7 +1,7 @@
 import './assets/scss/styles.scss';
 import Card from './components/card';
 import Logger from './utils/logger';
-import { IAnswer, ICard, INextCard } from './types';
+import { IAnswer, ICard, ILine, INextCard } from './types';
 
 import PlainDraggable from './plugins/plain-draggable.min';
 import LeaderLine from './plugins/leader-line.min';
@@ -11,11 +11,13 @@ export class ChatBotFlowsMaker {
   logger = new Logger();
   container: any;
   cardObjects: Card[] = [];
-  lines: Record<string, any> = {};
+  lines: ILine = {};
+  mouseDrawer!: MouseDrawer;
 
   constructor(container: any) {
     this.logger.debug('Init...');
     this.container = container || document.body;
+    this.mouseDrawer = new MouseDrawer(this.container);
     return this;
   }
 
@@ -24,6 +26,7 @@ export class ChatBotFlowsMaker {
     const card = new Card(this.container, item);
     this.cardObjects.push(card);
 
+    this.mouseDrawer.setCardObjects(this.cardObjects);
     return this;
   };
 
@@ -53,7 +56,15 @@ export class ChatBotFlowsMaker {
           }
 
           const toEl = nextCardObject.getCardNodeEl(nextCard.nodeIndex);
+          if (!toEl) {
+            this.logger.warn('Unknown to card node', nextCard);
+            continue;
+          }
+
           const lineId = this.getLineId(cardObject, answer, nextCard);
+          toEl.setAttribute('data-from-card-unique-id', cardObject.uniqueId);
+          toEl.setAttribute('data-from-answer-id', answer.id);
+          toEl.setAttribute('data-line-id', lineId);
 
           const line = new LeaderLine(fromEl, toEl, {
             lineId,
@@ -64,6 +75,8 @@ export class ChatBotFlowsMaker {
         }
       }
     }
+
+    this.mouseDrawer.setLines(this.lines);
   };
 
   initDraggableCards = () => {
@@ -106,12 +119,12 @@ export class ChatBotFlowsMaker {
     }
 
     this.lines = {};
+    this.mouseDrawer.setLines(this.lines);
   };
 
   registerMouseDrawer = () => {
-    const mouseDrawer = new MouseDrawer(this.container, this.cardObjects);
-    mouseDrawer.init();
-    mouseDrawer.setDrawDoneCallback(this.connectObjectsByLines);
+    this.mouseDrawer.init();
+    this.mouseDrawer.setDrawDoneCallback(this.connectObjectsByLines);
   };
 
   getNextCardObject = (uniqueId: string) => {
