@@ -2,6 +2,8 @@
   "name": "bot-flow-maker",
   "version": "1.0.0",
   "description": "Using leaderline to make chat bot flows",
+  "author": "Sango Technologies",
+  "license": "MIT",
   "main": "./cdn/js/sango.bot-flows-maker.min.js",
   "type": "commonjs",
   "scripts": {
@@ -17,8 +19,6 @@
     "format:tslint": "yarn lint --fix",
     "format:prettier": "prettier --write \"src/**/*\" \"*.md\""
   },
-  "author": "Sango Technologies",
-  "license": "MIT",
   "devDependencies": {
     "@types/jest": "24.0.9",
     "@types/jquery": "^3.5.9",

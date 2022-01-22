@@ -15,8 +15,16 @@ export default class Card {
     return this.card.uniqueId;
   }
 
+  get moveControlElementId() {
+    return `movearea-${this.card.uniqueId}`;
+  }
+
   get el() {
     return document.getElementById(this.card.uniqueId);
+  }
+
+  get moveControlEl() {
+    return document.getElementById(this.moveControlElementId);
   }
 
   get answers() {
@@ -24,7 +32,7 @@ export default class Card {
   }
 
   getAnswerUniqueId(answer: IAnswer) {
-    return `${this.card.id}-${answer.id}`;
+    return `answer-${this.card.uniqueId}-${answer.id}`;
   }
 
   getAnswerNodeEl(answer: IAnswer) {
@@ -47,7 +55,7 @@ export default class Card {
   renderHTML() {
     const html = `
     <div class="sgbmk__card" id="${this.elementId}">
-      <div class="sgbmk__card__title">
+      <div class="sgbmk__card__title" id="${this.moveControlElementId}">
         <span class="sgbmk__card__title__badge">${this.card.titleBadge}</span>
         ${this.card.title}
       </div>
@@ -57,7 +65,7 @@ export default class Card {
     </div>
     `;
 
-    this.container.innerHTML = html;
+    this.container.innerHTML += html;
   }
 
   renderAnswers() {
@@ -69,16 +77,15 @@ export default class Card {
     for (let i = 0; i < this.card.answers.length; i++) {
       const answer = this.card.answers[i];
       html += `
-        <div class="sgbmk__card__answers__item" id="${this.getCardAnswerElementId(answer)}">
-          ${answer.title}
+        <div class="sgbmk__card__answers__item">
+          <div class="sgbmk__card__answers__item__title sgbmk-ellipsis">${answer.title}</div>
+          <div class="sgbmk__card__answers__item__node sgbmk-node"
+            id="${this.getAnswerUniqueId(answer)}">
+          </div>
         </div>
       `;
     }
 
     return html;
-  }
-
-  getCardAnswerElementId(answer: IAnswer) {
-    return `answer-${this.card.uniqueId}-${answer.id}`;
   }
 }

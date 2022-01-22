@@ -14,14 +14,44 @@
         uniqueId: '1',
         title: 'Question #1',
         titleBadge: 'QA',
+        left: 100,
+        top: 100,
         answers: [
           {
             id: '1',
-            title: 'YES'
+            title: 'YES',
+            nextCards: [
+              {
+                nodeIdex: 1,
+                uniqueId: '2'
+              },
+            ]
           },
           {
             id: '2',
-            title: 'NO'
+            title: 'NO',
+            nodeIdex: 1,
+          },
+        ]
+      })
+
+      chatbotFlow.addCard({
+        id: '2',
+        uniqueId: '2',
+        title: 'Question #2',
+        titleBadge: 'QA',
+        left: 200,
+        top: 200,
+        answers: [
+          {
+            id: '3',
+            title: 'YES',
+            nodeIdex: 1,
+          },
+          {
+            id: '4',
+            title: 'NO',
+            nodeIdex: 1,
           },
         ]
       })

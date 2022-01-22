@@ -1,7 +1,13 @@
+export interface INextCard {
+  nodeIndex: number;
+  uniqueId: string;
+}
+
 export interface IAnswer {
   id: string;
   title: string;
-  nextUniqueIds: string[];
+  nextCards: INextCard[];
+  nodeIndex: number;
 }
 
 export interface ICard {

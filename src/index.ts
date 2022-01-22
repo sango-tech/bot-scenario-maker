@@ -22,6 +22,7 @@ export class ChatBotFlowsMaker {
     this.logger.log('Added card', item);
     const card = new Card(this.container, item);
     this.cardsObjectList.push(card);
+
     return this;
   };
 
@@ -30,6 +31,7 @@ export class ChatBotFlowsMaker {
       const cardObj = this.cardsObjectList[i];
       cardObj.render();
     }
+
     this.connectObjectsByLines();
     this.initDraggableCards();
   };
@@ -38,14 +40,13 @@ export class ChatBotFlowsMaker {
     for (const cardObject of this.cardsObjectList) {
       for (const answer of cardObject.answers) {
         const fromEl = cardObject.getAnswerNodeEl(answer);
+        const nextCards = answer.nextCards || [];
 
-        const nextUniqueIds = answer.nextUniqueIds || [];
-        for (const nextUniqueId of nextUniqueIds) {
-          const toEl = document.getElementById(nextUniqueId);
-
+        for (const nextCard of nextCards) {
+          const toEl = document.getElementById(nextCard.uniqueId);
           const line = new LeaderLine(fromEl, toEl, {
             middleLabel: (LeaderLine as any).captionLabel(answer.title),
-            lineId: `${cardObject.getAnswerUniqueId(answer)}-${nextUniqueId}`,
+            lineId: `${cardObject.getAnswerUniqueId(answer)}-${nextCard.uniqueId}`,
           });
 
           this.lines.push(line);
@@ -57,8 +58,8 @@ export class ChatBotFlowsMaker {
   initDraggableCards = () => {
     for (const cardObject of this.cardsObjectList) {
       const fromEl = cardObject.el;
-
-      return new PlainDraggable(fromEl, {
+      new PlainDraggable(fromEl, {
+        handle: cardObject.moveControlEl,
         autoScroll: true,
         onMove: () => {
           this.reDrawLinePosition();

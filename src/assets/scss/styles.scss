@@ -1,4 +1,15 @@
 .sgbmk {
+  &-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &-node {
+    width: 10px;
+    height: 10px;
+    background: orange;
+    border-radius: 100%;
+  }
   &__card {
     position: absolute;
     min-width: 100px;
@@ -20,6 +31,11 @@
         border: 3px #8e8e8e solid;
         color: #fff;
         margin: 8px;
+        display: flex;
+        align-items: center;
+        &__title {
+          flex: 1;
+        }
       }
     }
   }
