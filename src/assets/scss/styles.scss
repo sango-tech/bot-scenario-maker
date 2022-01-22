@@ -11,10 +11,18 @@
     border-radius: 100%;
   }
   &__card {
+    $card: &;
     position: absolute;
     min-width: 100px;
     max-width: 230px;
     background: #d8d8d8;
+    &:hover {
+      #{$card} {
+        &__node {
+          display: block;
+        }
+      }
+    }
     &__title {
       padding: 8px;
       background: #5b5b5b;
@@ -36,6 +44,47 @@
         &__title {
           flex: 1;
         }
+      }
+    }
+    &__node {
+      position: absolute;
+      background: cornflowerblue;
+      display: none;
+      &--0 {
+        left: -5px;
+        top: -5px;
+      }
+      &--1 {
+        left: 50%;
+        margin-left: -5px;
+        top: -5px;
+      }
+      &--2 {
+        right: -5px;
+        top: -5px;
+      }
+      &--3 {
+        right: -5px;
+        top: 50%;
+        margin-top: -5px;
+      }
+      &--4 {
+        right: -5px;
+        bottom: -5px;
+      }
+      &--5 {
+        left: 50%;
+        margin-left: -5px;
+        bottom: -5px;
+      }
+      &--6 {
+        left: -5px;
+        bottom: -5px;
+      }
+      &--7 {
+        left: -5px;
+        top: 50%;
+        margin-top: -5px;
       }
     }
   }

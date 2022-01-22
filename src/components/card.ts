@@ -35,6 +35,10 @@ export default class Card {
     return `answer-${this.card.uniqueId}-${answer.id}`;
   }
 
+  getCardNodeId(index: number) {
+    return `card-node-${this.card.uniqueId}-${index}`;
+  }
+
   getAnswerNodeEl(answer: IAnswer) {
     return document.getElementById(this.getAnswerUniqueId(answer));
   }
@@ -62,6 +66,7 @@ export default class Card {
       <div class="sgbmk__card__answers">
         ${this.renderAnswers()}
       </div>
+      ${this.renderCardNodes()}
     </div>
     `;
 
@@ -84,6 +89,16 @@ export default class Card {
           </div>
         </div>
       `;
+    }
+
+    return html;
+  }
+
+  renderCardNodes() {
+    let html = '';
+    for (let i = 0; i < 8; i++) {
+      html += `<span class="sgbmk__card__node sgbmk__card__node--${i} sgbmk-node"
+      id="${this.getCardNodeId(i)}"></span>`;
     }
 
     return html;
