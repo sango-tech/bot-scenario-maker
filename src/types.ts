@@ -1,3 +1,8 @@
+export interface ICardType {
+  name: string;
+  displayText: string;
+}
+
 export interface INextCard {
   nodeIndex: number;
   uniqueId: string;

@@ -1,11 +1,13 @@
 import './assets/scss/styles.scss';
 import Card from './components/card';
 import Logger from './utils/logger';
-import { IAnswer, ICard, ILine, INextCard } from './types';
+import { IAnswer, ICard, ICardType, ILine, INextCard } from './types';
 
 import PlainDraggable from './plugins/plain-draggable.min';
 import LeaderLine from './plugins/leader-line.min';
 import MouseDrawer from './components/mouseDrawer';
+import cardType from './components/cardType';
+import bus from './components/bus';
 
 export class ChatBotFlowsMaker {
   logger = new Logger();
@@ -34,7 +36,7 @@ export class ChatBotFlowsMaker {
   render = () => {
     for (let i = 0; i < this.cardObjects.length; i++) {
       const cardObj = this.cardObjects[i];
-      cardObj.setCallbackCardDelete(this.removeCard);
+      bus.onDeleteCard(this.removeCard);
 
       cardObj.render();
     }
@@ -131,11 +133,15 @@ export class ChatBotFlowsMaker {
   };
 
   onCardEdit = (callback: Function) => {
-    this.callbackCardEdit = callback;
-    for (let i = 0; i < this.cardObjects.length; i++) {
-      const cardObj = this.cardObjects[i];
-      cardObj.setCallbackCardEdit(this.callbackCardEdit);
-    }
+    bus.onCardEdit(callback);
+  };
+
+  onAddNextClicked = (callback: Function) => {
+    bus.onAddNext(callback);
+  };
+
+  setCardTypes = (cardTypes: ICardType[]) => {
+    cardType.setCardTypes(cardTypes);
   };
 
   registerMouseDrawer = () => {

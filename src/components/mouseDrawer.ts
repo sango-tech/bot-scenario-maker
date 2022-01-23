@@ -183,7 +183,6 @@ export default class MouseDrawer {
 
     // Remove current line before moving
     const currentLine = this.lines[lineId];
-    console.log(this.lines, 'this.lines');
     if (currentLine) {
       currentLine.remove();
     }

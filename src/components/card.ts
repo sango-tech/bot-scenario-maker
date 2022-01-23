@@ -1,13 +1,13 @@
 import { IAnswer, ICard } from 'src/types';
 import { debouce } from 'src/utils/helper';
 import Logger from 'src/utils/logger';
+import bus from './bus';
+import cardType from './cardType';
 
 export default class Card {
   logger = new Logger();
   card!: ICard;
   container!: any;
-  callbackCardDelete!: Function;
-  callbackCardEdit!: Function;
 
   constructor(container: any, card: ICard) {
     this.container = container;
@@ -16,6 +16,10 @@ export default class Card {
 
   get uniqueId() {
     return this.card.uniqueId;
+  }
+
+  get addNextCardCls() {
+    return `sgbmk-next-answer-menu-item-${this.uniqueId}`;
   }
 
   get elementId() {
@@ -28,6 +32,10 @@ export default class Card {
 
   get deleteButtonId() {
     return `card-delete-btn-${this.card.uniqueId}`;
+  }
+
+  get addNextButtonId() {
+    return `card-add-next-btn-${this.card.uniqueId}`;
   }
 
   get editButtonId() {
@@ -50,19 +58,17 @@ export default class Card {
     return document.getElementById(this.editButtonId);
   }
 
+  get addNextButtonEl() {
+    return document.getElementById(this.addNextButtonId);
+  }
+
   get answers() {
     return this.card.answers || [];
   }
 
-  setCallbackCardDelete = (callback: Function) => {
-    this.callbackCardDelete = callback;
-    this.registerDeleteCardEvent();
-  };
-
-  setCallbackCardEdit = (callback: Function) => {
-    this.callbackCardEdit = callback;
-    this.registerEditCardEvent();
-  };
+  get cardTypes() {
+    return cardType.cardTypes;
+  }
 
   getAnswerNodeUniqueId(answer: IAnswer) {
     return `answer-node-${this.card.uniqueId}-${answer.id}`;
@@ -91,6 +97,9 @@ export default class Card {
   async render() {
     this.logger.log('Card:render');
     this.renderHTML();
+    this.registerDeleteCardEvent();
+    this.registerEditCardEvent();
+    this.registerNextAddNextCardEvent();
   }
 
   renderHTML() {
@@ -107,6 +116,7 @@ export default class Card {
       <div class="sgbmk__card__actions">
         ${this.renderDeleteButton()}
         ${this.renderEditButton()}
+        ${this.renderAddNextButton()}
       </div>
 
       ${this.renderCardNodes()}
@@ -156,8 +166,8 @@ export default class Card {
     const that = this;
     debouce(() => {
       this.deleteButtonEl?.addEventListener('click', function () {
-        if (that.callbackCardDelete) {
-          that.callbackCardDelete(that.uniqueId);
+        if (bus.callbackOnDeleteCard) {
+          bus.callbackOnDeleteCard(that.uniqueId);
         }
       });
     }, 500);
@@ -166,12 +176,28 @@ export default class Card {
   registerEditCardEvent = () => {
     const that = this;
     debouce(() => {
-      console.log(this.editButtonEl);
       this.editButtonEl?.addEventListener('click', function () {
-        if (that.callbackCardEdit) {
-          that.callbackCardEdit(that.uniqueId);
+        if (bus.callbackOnEditCard) {
+          bus.callbackOnEditCard(that.uniqueId);
         }
       });
+    }, 500);
+  };
+
+  registerNextAddNextCardEvent = () => {
+    debouce(() => {
+      const elements = document.getElementsByClassName(this.addNextCardCls);
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].addEventListener('click', function (event) {
+          if (bus.callbackOnAddNext) {
+            const target = event.target as HTMLElement;
+            const cardType = target.getAttribute('data-card-type');
+            const uniqueId = target.getAttribute('data-unique-id');
+            const answerId = target.getAttribute('data-answer-id');
+            bus.callbackOnAddNext({ cardType, uniqueId, answerId });
+          }
+        });
+      }
     }, 500);
   };
 
@@ -190,4 +216,47 @@ export default class Card {
       </a>
     `;
   }
+
+  renderAddNextButton() {
+    console.log(this.cardTypes, 'this.cardTypes');
+    if (!this.cardTypes.length) {
+      return '';
+    }
+
+    return `
+      <a id="${this.addNextButtonId}" class="sgbmk-btn" data-unique-id="${this.uniqueId}">
+        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" class="svg-inline--fa fa-plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z"></path></svg>
+        ${this.renderMenuAnswerNext()}
+      </a>
+    `;
+  }
+
+  renderMenuAnswerNext = () => {
+    let html = '';
+    for (const cardType of this.cardTypes) {
+      let subMenu = '';
+      for (const answer of this.answers) {
+        subMenu += `
+          <li
+            class="${this.addNextCardCls}"
+            data-card-type="${cardType.name}"
+            data-unique-id="${this.uniqueId}"
+            data-answer-id="${answer.id}">
+            ${answer.title}
+          </li>
+        `;
+      }
+
+      html += `
+        <li>
+          <span>${cardType.displayText}</span>
+          <ul>
+            ${subMenu}
+          </ul>
+        </li>
+      `;
+    }
+
+    return `<ul>${html}</ul>`;
+  };
 }

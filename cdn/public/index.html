@@ -8,6 +8,20 @@
     <script>
       const container = document.getElementById('botFlowContainer');
       const chatbotFlow = Sango.ChatBotFlowsMaker(container);
+      chatbotFlow.setCardTypes([
+        {
+          name: 'question',
+          displayText: 'Question',
+        },
+        {
+          name: 'message',
+          displayText: 'Message',
+        },
+        {
+          name: 'goal',
+          displayText: 'Goal',
+        },
+      ])
 
       chatbotFlow.addCard({
         id: '1',
@@ -53,10 +67,15 @@
         ]
       })
 
-      chatbotFlow.render();
       chatbotFlow.onCardEdit((uniqueId) => {
         console.log('Card edit clicked', uniqueId)
       })
+
+      chatbotFlow.onAddNextClicked((data) => {
+        console.log('Card add next clicked', data)
+      })
+
+      chatbotFlow.render();
     </script>
   </body>
 </html>
