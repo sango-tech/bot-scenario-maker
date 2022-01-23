@@ -8,6 +8,7 @@
     <script>
       const container = document.getElementById('botFlowContainer');
       const chatbotFlow = Sango.ChatBotFlowsMaker(container);
+
       chatbotFlow.addCard({
         id: '1',
         uniqueId: '1',
@@ -53,6 +54,9 @@
       })
 
       chatbotFlow.render();
+      chatbotFlow.onCardEdit((uniqueId) => {
+        console.log('Card edit clicked', uniqueId)
+      })
     </script>
   </body>
 </html>

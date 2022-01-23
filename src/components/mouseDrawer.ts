@@ -2,7 +2,7 @@ import { IDrawClickedNodeFrom, ILine } from 'src/types';
 import Logger from 'src/utils/logger';
 import Card from './card';
 import LeaderLine from '../plugins/leader-line.min';
-import SangoHelper from 'src/utils/helper';
+import SangoHelper, { uniqBy } from 'src/utils/helper';
 
 export default class MouseDrawer {
   logger = new Logger();
@@ -206,7 +206,7 @@ export default class MouseDrawer {
           nodeIndex: nodeIndex,
         });
 
-        answer.nextCards = this.helper.uniqBy(nextCards, 'uniqueId');
+        answer.nextCards = uniqBy(nextCards, 'uniqueId');
         return answer;
       });
 

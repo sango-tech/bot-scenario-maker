@@ -6,9 +6,13 @@ export default class SangoHelper {
   get now() {
     return new Date();
   }
-
-  uniqBy(arr: any[], key: string) {
-    const set = new Set();
-    return arr.filter((o) => !set.has(o[key]) && set.add(o[key]));
-  }
 }
+
+export const uniqBy = (arr: any[], key: string) => {
+  const set = new Set();
+  return arr.filter((o) => !set.has(o[key]) && set.add(o[key]));
+};
+
+export const debouce = (func: Function, timer: number) => {
+  setTimeout(func, timer);
+};

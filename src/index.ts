@@ -13,6 +13,7 @@ export class ChatBotFlowsMaker {
   cardObjects: Card[] = [];
   lines: ILine = {};
   mouseDrawer!: MouseDrawer;
+  callbackCardEdit!: Function;
 
   constructor(container: any) {
     this.logger.debug('Init...');
@@ -33,6 +34,8 @@ export class ChatBotFlowsMaker {
   render = () => {
     for (let i = 0; i < this.cardObjects.length; i++) {
       const cardObj = this.cardObjects[i];
+      cardObj.setCallbackCardDelete(this.removeCard);
+
       cardObj.render();
     }
 
@@ -69,6 +72,7 @@ export class ChatBotFlowsMaker {
           const line = new LeaderLine(fromEl, toEl, {
             lineId,
             middleLabel: (LeaderLine as any).captionLabel(answer.title),
+            endLabel: (LeaderLine as any).pathLabel('×'),
           });
 
           this.lines[lineId] = line;
@@ -120,6 +124,18 @@ export class ChatBotFlowsMaker {
 
     this.lines = {};
     this.mouseDrawer.setLines(this.lines);
+  };
+
+  removeCard = (uniqueId: string) => {
+    this.logger.log(`Remove card clicked, uniqueId: ${uniqueId}`);
+  };
+
+  onCardEdit = (callback: Function) => {
+    this.callbackCardEdit = callback;
+    for (let i = 0; i < this.cardObjects.length; i++) {
+      const cardObj = this.cardObjects[i];
+      cardObj.setCallbackCardEdit(this.callbackCardEdit);
+    }
   };
 
   registerMouseDrawer = () => {
