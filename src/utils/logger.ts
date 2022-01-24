@@ -1,8 +1,8 @@
 import { constant } from './constant';
 import SangoDebug from './debug';
 
-export default class Logger {
-  private debugger = new SangoDebug();
+class Logger {
+  debugger = new SangoDebug();
 
   public log(type: string, message: any = '') {
     console.log(`%c[SANGO] ${type}`, constant.console_color, message);
@@ -20,3 +20,5 @@ export default class Logger {
     console.debug(`%c[SANGO DEBUG]`, constant.console_color_warning, value);
   }
 }
+
+export default new Logger();

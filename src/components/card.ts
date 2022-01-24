@@ -1,11 +1,10 @@
 import { IAnswer, ICard } from 'src/types';
 import { debouce } from 'src/utils/helper';
-import Logger from 'src/utils/logger';
+import logger from 'src/utils/logger';
 import bus from './bus';
 import cardType from './cardType';
 
 export default class Card {
-  logger = new Logger();
   card!: ICard;
   container!: any;
 
@@ -95,7 +94,7 @@ export default class Card {
   }
 
   async render() {
-    this.logger.log('Card:render');
+    logger.log('Card:render');
     this.renderHTML();
     this.registerDeleteCardEvent();
     this.registerEditCardEvent();

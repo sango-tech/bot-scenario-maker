@@ -1,33 +1,26 @@
-import { IDrawClickedNodeFrom, ILine } from 'src/types';
-import Logger from 'src/utils/logger';
-import Card from './card';
+import { IDrawClickedNodeFrom } from 'src/types';
 import LeaderLine from '../plugins/leader-line.min';
 import SangoHelper, { uniqBy } from 'src/utils/helper';
+import logger from 'src/utils/logger';
+import cardObjects from './cardObjects';
 
-export default class MouseDrawer {
-  logger = new Logger();
+class MouseDrawer {
   helper = new SangoHelper();
   container: any;
-  cardObjects!: Card[];
   clickedNodeFrom: IDrawClickedNodeFrom | null = null;
   movingLine: any = null;
   drawDoneCallback!: Function;
-  private lines: ILine = {};
-
-  constructor(container: any) {
-    this.container = container;
-  }
 
   get endMovingNodeId() {
     return 'sgbmk-end-moving-node';
   }
 
-  setCardObjects(cardObjects: Card[]) {
-    this.cardObjects = cardObjects;
+  get movingNodeCls() {
+    return 'sgbmk-draw-moving-node';
   }
 
-  setLines(lines: ILine) {
-    this.lines = lines;
+  setContainer(container: any) {
+    this.container = container;
   }
 
   setDrawDoneCallback(callback: Function) {
@@ -49,11 +42,11 @@ export default class MouseDrawer {
       answerId,
     };
 
-    this.logger.log('Clicked node was set to', this.clickedNodeFrom);
+    logger.log('Clicked node was set to', this.clickedNodeFrom);
   };
 
   removeDrawingMode = () => {
-    this.logger.log('Remove drawing mode');
+    logger.log('Remove drawing mode');
     this.clickedNodeFrom = null;
     if (this.movingLine) {
       this.movingLine.remove();
@@ -95,7 +88,7 @@ export default class MouseDrawer {
 
     const node = document.createElement('div');
     node.id = this.endMovingNodeId;
-    node.classList.add('sgbmk-draw-moving-node');
+    node.classList.add(this.movingNodeCls);
     this.container.appendChild(node);
 
     this.regiterMouseMoveLine();
@@ -132,7 +125,7 @@ export default class MouseDrawer {
     }
 
     const target = event.target as any;
-    this.logger.log('Answer node clicked');
+    logger.log('Answer node clicked');
     const fromUniqueId = target.getAttribute('data-card-unique-id');
     const fromAnswerId = target.getAttribute('data-answer-id');
     if (!fromUniqueId || !fromAnswerId) {
@@ -157,9 +150,9 @@ export default class MouseDrawer {
       return;
     }
 
-    this.logger.log(`End node clicked: uniqueId: ${nextUniqueId}, nodeIndex: ${nodeIndex}`);
+    logger.log(`End node clicked: uniqueId: ${nextUniqueId}, nodeIndex: ${nodeIndex}`);
     if (this.clickedNodeFrom.uniqueId === nextUniqueId) {
-      this.logger.log('Clicked to the same card, skipped');
+      logger.log('Clicked to the same card, skipped');
       return;
     }
 
@@ -169,12 +162,11 @@ export default class MouseDrawer {
   // User click into end line and move to other card or node
   handleInitMoveExistLine = (event: MouseEvent) => {
     const endNodeEl = event.target as HTMLElement;
-
     const fromUniqueId = endNodeEl.getAttribute('data-from-card-unique-id');
     const fromAnswerId = endNodeEl.getAttribute('data-from-answer-id');
     const lineId = endNodeEl.getAttribute('data-line-id');
     if (!fromUniqueId || !fromAnswerId || !lineId) {
-      this.logger.log('Not clicked on end exists line');
+      logger.log('Not clicked on end exists line');
       return;
     }
 
@@ -182,14 +174,15 @@ export default class MouseDrawer {
     this.addMovingLine(event);
 
     // Remove current line before moving
-    const currentLine = this.lines[lineId];
+    const currentLine = cardObjects.lines[lineId];
     if (currentLine) {
+      logger.warn('Unknown moving line');
       currentLine.remove();
     }
   };
 
   onDrawDone = (nextUniqueId: string, nodeIndex: number) => {
-    this.cardObjects.map((cardObject) => {
+    cardObjects.items.map((cardObject) => {
       if (cardObject.uniqueId !== this.clickedNodeFrom?.uniqueId) {
         return cardObject;
       }
@@ -217,7 +210,7 @@ export default class MouseDrawer {
   };
 
   getClickedFromCardObject = () => {
-    return this.cardObjects.find((item) => item.uniqueId === this.clickedNodeFrom?.uniqueId);
+    return cardObjects.items.find((item) => item.uniqueId === this.clickedNodeFrom?.uniqueId);
   };
 
   regiterMouseMoveLine = () => {
@@ -238,3 +231,5 @@ export default class MouseDrawer {
     }
   }
 }
+
+export default new MouseDrawer();
