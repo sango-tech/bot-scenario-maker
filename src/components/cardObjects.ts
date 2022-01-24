@@ -7,6 +7,7 @@ import { IAnswer, ILine, INextCard } from 'src/types';
 class CardObjects {
   items: Card[] = [];
   lines: ILine = {};
+  onChangeCallback!: Function;
 
   addCard(item: Card) {
     this.items.push(item);
@@ -14,6 +15,14 @@ class CardObjects {
 
   removeCard = (uniqueId: string) => {
     logger.log(`Remove card clicked, uniqueId: ${uniqueId}`);
+    this.items = this.items.filter((item) => item.uniqueId !== uniqueId);
+    if (this.onChangeCallback) {
+      this.onChangeCallback();
+    }
+  };
+
+  onChange = (callback: Function) => {
+    this.onChangeCallback = callback;
   };
 
   findByUniqueId = (uniqueId: string) => {
@@ -59,8 +68,8 @@ class CardObjects {
 
   initDraggableCards = () => {
     for (const cardObject of this.items) {
-      const fromEl = cardObject.el;
-      new PlainDraggable(fromEl, {
+      const moveEL = cardObject.el;
+      new PlainDraggable(moveEL, {
         handle: cardObject.moveControlEl,
         autoScroll: true,
         onMove: () => {

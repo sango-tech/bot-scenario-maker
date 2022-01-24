@@ -6,6 +6,7 @@ import bus from './components/bus';
 import cardObjects from './components/cardObjects';
 import logger from './utils/logger';
 import mouseDrawer from './components/mouseDrawer';
+import renderer from './components/renderer';
 
 export class ChatBotFlowsMaker {
   container: any;
@@ -25,14 +26,11 @@ export class ChatBotFlowsMaker {
   };
 
   render = () => {
-    for (const cardObject of cardObjects.items) {
-      bus.onDeleteCard(cardObjects.removeCard);
-      cardObject.render();
-    }
-
-    cardObjects.connectObjectsByLines();
-    cardObjects.initDraggableCards();
-    this.registerMouseDrawer();
+    renderer.render();
+    bus.onDeleteCard(cardObjects.removeCard);
+    cardObjects.onChange(() => {
+      renderer.render();
+    });
   };
 
   onCardEdit = (callback: Function) => {
@@ -45,11 +43,5 @@ export class ChatBotFlowsMaker {
 
   setCardTypes = (cardTypes: ICardType[]) => {
     cardType.setCardTypes(cardTypes);
-  };
-
-  registerMouseDrawer = () => {
-    mouseDrawer.init();
-    // Redraw lines after mouse event done
-    mouseDrawer.setDrawDoneCallback(cardObjects.connectObjectsByLines);
   };
 }

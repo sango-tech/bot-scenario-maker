@@ -235,7 +235,6 @@ export default class Card {
   }
 
   renderAddNextButton() {
-    console.log(this.cardTypes, 'this.cardTypes');
     if (!this.cardTypes.length) {
       return '';
     }
