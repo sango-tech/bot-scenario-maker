@@ -17,8 +17,8 @@ export default class Card {
     return this.card.uniqueId;
   }
 
-  get addNextCardCls() {
-    return `sgbmk-next-answer-menu-item-${this.uniqueId}`;
+  get nextBtnCls() {
+    return `sgbmk-next-button-${this.uniqueId}`;
   }
 
   get elementId() {
@@ -185,16 +185,34 @@ export default class Card {
 
   registerNextAddNextCardEvent = () => {
     debouce(() => {
-      const elements = document.getElementsByClassName(this.addNextCardCls);
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].addEventListener('click', function (event) {
-          if (bus.callbackOnAddNext) {
-            const target = event.target as HTMLElement;
-            const cardType = target.getAttribute('data-card-type');
-            const uniqueId = target.getAttribute('data-unique-id');
-            const answerId = target.getAttribute('data-answer-id');
-            bus.callbackOnAddNext({ cardType, uniqueId, answerId });
+      const nextBtns = document.querySelectorAll(`.${this.nextBtnCls}`);
+      if (!nextBtns || !bus.callbackOnAddNext) {
+        return;
+      }
+
+      const that = this;
+      for (var i = 0; i < nextBtns.length; i++) {
+        const nextBtn = nextBtns[i];
+        nextBtn.addEventListener('click', function (event) {
+          const selectedAnswerIds: string[] = [];
+          let cardType;
+
+          const target = event.target as HTMLElement;
+          cardType = target.getAttribute('data-card-type');
+
+          const checkboxs = target.parentElement?.querySelectorAll('input[type="checkbox"]');
+          if (!checkboxs) {
+            return;
           }
+
+          for (var i = 0; i < checkboxs.length; i++) {
+            const checkbox = checkboxs[i] as any;
+            if (checkbox.checked) {
+              selectedAnswerIds.push(checkbox.value);
+            }
+          }
+
+          bus.callbackOnAddNext({ cardType, uniqueId: that.uniqueId, selectedAnswerIds });
         });
       }
     }, 500);
@@ -237,11 +255,10 @@ export default class Card {
       for (const answer of this.answers) {
         subMenu += `
           <li
-            class="${this.addNextCardCls}"
             data-card-type="${cardType.name}"
-            data-unique-id="${this.uniqueId}"
             data-answer-id="${answer.id}">
-            ${answer.title}
+            <input type="checkbox" value="${answer.id}" />
+            <label>${answer.title}</label>
           </li>
         `;
       }
@@ -251,6 +268,8 @@ export default class Card {
           <span>${cardType.displayText}</span>
           <ul>
             ${subMenu}
+
+            <input type="button" class="${this.nextBtnCls}" value="Next" data-card-type="${cardType.name}" />
           </ul>
         </li>
       `;
