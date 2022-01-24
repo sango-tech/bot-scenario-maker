@@ -1,4 +1,4 @@
-import { ICardType } from 'src/types';
+import { ICardType } from '../types';
 
 class CardType {
   cardTypes: ICardType[] = [];

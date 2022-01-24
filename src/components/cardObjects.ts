@@ -1,8 +1,8 @@
-import logger from 'src/utils/logger';
+import logger from '../utils/logger';
 import Card from './card';
 import PlainDraggable from '../plugins/plain-draggable.min';
 import LeaderLine from '../plugins/leader-line.min';
-import { IAnswer, ICard, ILine, INextCard } from 'src/types';
+import { IAnswer, ICard, ILine, INextCard } from '../types';
 import bus from './bus';
 
 class CardObjects {

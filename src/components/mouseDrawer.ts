@@ -1,7 +1,7 @@
-import { IDrawClickedNodeFrom } from 'src/types';
+import { IDrawClickedNodeFrom } from '../types';
 import LeaderLine from '../plugins/leader-line.min';
-import SangoHelper, { uniqBy } from 'src/utils/helper';
-import logger from 'src/utils/logger';
+import SangoHelper, { uniqBy } from '../utils/helper';
+import logger from '../utils/logger';
 import cardObjects from './cardObjects';
 
 class MouseDrawer {

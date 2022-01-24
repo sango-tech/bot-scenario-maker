@@ -1,6 +1,6 @@
-import { IAnswer, ICard } from 'src/types';
-import { debouce, randomString } from 'src/utils/helper';
-import logger from 'src/utils/logger';
+import { IAnswer, ICard } from '../types';
+import { debouce, randomString } from '../utils/helper';
+import logger from '../utils/logger';
 import bus from './bus';
 import cardType from './cardType';
 
