@@ -4,6 +4,7 @@ class Bus {
   callbackOnEditCard!: Function;
   callbackOnDeleteCard!: Function;
   callbackOnAddNext!: Function;
+  callbackOnChange!: Function;
 
   onCardEdit = (callback: Function) => {
     logger.log('onEditClick was set');
@@ -13,6 +14,11 @@ class Bus {
   onAddNext = (callback: Function) => {
     logger.log('onAddNext was set');
     this.callbackOnAddNext = callback;
+  };
+
+  onChange = (callback: Function) => {
+    logger.log('onChange was set');
+    this.callbackOnChange = callback;
   };
 
   onDeleteCard = (callback: Function) => {

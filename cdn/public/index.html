@@ -71,6 +71,10 @@
         console.log('Card edit clicked', uniqueId)
       })
 
+      chatbotFlow.onChange((newValue) => {
+        console.log('New data', newValue)
+      })
+
       chatbotFlow.onAddNextClicked((data) => {
         console.log('Card add next clicked', data)
       })

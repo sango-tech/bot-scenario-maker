@@ -28,13 +28,18 @@ export class ChatBotFlowsMaker {
   render = () => {
     renderer.render();
     bus.onDeleteCard(cardObjects.removeCard);
-    cardObjects.onChange(() => {
+    cardObjects.onChange((newValue: ICard[]) => {
+      console.log(newValue, 'newValue');
       renderer.render();
     });
   };
 
   onCardEdit = (callback: Function) => {
     bus.onCardEdit(callback);
+  };
+
+  onChange = (callback: Function) => {
+    bus.onChange(callback);
   };
 
   onAddNextClicked = (callback: Function) => {

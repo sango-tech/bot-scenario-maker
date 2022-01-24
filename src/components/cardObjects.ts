@@ -2,7 +2,8 @@ import logger from 'src/utils/logger';
 import Card from './card';
 import PlainDraggable from '../plugins/plain-draggable.min';
 import LeaderLine from '../plugins/leader-line.min';
-import { IAnswer, ILine, INextCard } from 'src/types';
+import { IAnswer, ICard, ILine, INextCard } from 'src/types';
+import bus from './bus';
 
 class CardObjects {
   items: Card[] = [];
@@ -17,12 +18,41 @@ class CardObjects {
     logger.log(`Remove card clicked, uniqueId: ${uniqueId}`);
     this.items = this.items.filter((item) => item.uniqueId !== uniqueId);
     if (this.onChangeCallback) {
-      this.onChangeCallback();
+      const newVal = this.getValue();
+      this.onChangeCallback(newVal);
+      // Emit to client
+      bus.callbackOnChange(newVal);
     }
+  };
+
+  getValue = () => {
+    const newValue: ICard[] = [];
+    for (const cardObject of this.items) {
+      const card = cardObject.card;
+      const answers = card.answers;
+      for (var i = 0; i < answers.length; i++) {
+        const answer = answers[i];
+        answers[i].nextCards =
+          answer.nextCards?.filter((nextCard) => {
+            // Remove all next card if that card not exists
+            return this.items.find((item) => item.uniqueId === nextCard.uniqueId);
+          }) || [];
+      }
+
+      card.answers = answers;
+      newValue.push(card);
+    }
+
+    return newValue;
   };
 
   onChange = (callback: Function) => {
     this.onChangeCallback = callback;
+  };
+
+  triggerChanged = () => {
+    // Emit to client
+    bus.callbackOnChange(this.getValue());
   };
 
   findByUniqueId = (uniqueId: string) => {

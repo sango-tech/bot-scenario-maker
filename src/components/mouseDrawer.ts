@@ -207,6 +207,7 @@ class MouseDrawer {
 
     this.reDrawnAll();
     this.removeDrawingMode();
+    cardObjects.triggerChanged();
   };
 
   getClickedFromCardObject = () => {
