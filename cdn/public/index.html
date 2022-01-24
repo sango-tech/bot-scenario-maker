@@ -67,6 +67,8 @@
 
       chatbotFlow.onCardEdit((uniqueId) => {
         console.log('Card edit clicked', uniqueId)
+        // After update card
+        // chatbotFlow.updateCard(uniqueId, {answers: []}).reRender();
       })
 
       chatbotFlow.onChange((newValue) => {
