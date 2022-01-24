@@ -85,8 +85,9 @@ export default class Card {
     return document.getElementById(this.getAnswerNodeUniqueId(answer));
   }
 
-  setLeft(num: number) {
-    this.card.left = num;
+  setPos(left: number, top: number) {
+    this.card.left = left;
+    this.card.top = top;
   }
 
   setTop(num: number) {

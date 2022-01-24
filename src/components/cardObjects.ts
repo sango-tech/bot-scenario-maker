@@ -14,6 +14,18 @@ class CardObjects {
     this.items.push(item);
   }
 
+  updateCard(uniqueId: string, data: any) {
+    this.items.map((item) => {
+      if (item.uniqueId === uniqueId) {
+        item = { ...item, ...data };
+      }
+
+      return item;
+    });
+
+    this.triggerChanged();
+  }
+
   removeCard = (uniqueId: string) => {
     logger.log(`Remove card clicked, uniqueId: ${uniqueId}`);
     this.items = this.items.filter((item) => item.uniqueId !== uniqueId);
@@ -53,10 +65,6 @@ class CardObjects {
   triggerChanged = () => {
     // Emit to client
     bus.callbackOnChange(this.getValue());
-  };
-
-  findByUniqueId = (uniqueId: string) => {
-    return this.items.find((item) => item.uniqueId === uniqueId);
   };
 
   connectObjectsByLines = () => {
@@ -106,8 +114,8 @@ class CardObjects {
           this.rePosition();
         },
         onDragEnd: (evt: any) => {
-          cardObject.setLeft(evt.left);
-          cardObject.setTop(evt.top);
+          cardObject.setPos(evt.left, evt.top);
+          this.triggerChanged();
         },
       });
     }
@@ -144,6 +152,10 @@ class CardObjects {
 
   makeLineId = (cardObject: Card, answer: IAnswer, nextCard: INextCard) => {
     return `line-${cardObject.uniqueId}-${answer.id}-${nextCard.uniqueId}-${nextCard.nodeIndex}`;
+  };
+
+  findByUniqueId = (uniqueId: string) => {
+    return this.items.find((item) => item.uniqueId === uniqueId);
   };
 }
 

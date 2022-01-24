@@ -25,6 +25,11 @@ export class ChatBotFlowsMaker {
     return this;
   };
 
+  updateCard(uniqueId: string, data: any) {
+    cardObjects.updateCard(uniqueId, data);
+    return this;
+  }
+
   render = () => {
     renderer.render();
     bus.onDeleteCard(cardObjects.removeCard);
@@ -33,6 +38,10 @@ export class ChatBotFlowsMaker {
       renderer.render();
     });
   };
+
+  reRender() {
+    renderer.render();
+  }
 
   onCardEdit = (callback: Function) => {
     bus.onCardEdit(callback);
