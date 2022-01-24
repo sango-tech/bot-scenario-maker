@@ -1,11 +1,10 @@
 import { IDrawClickedNodeFrom } from '../types';
 import LeaderLine from '../plugins/leader-line.min';
-import SangoHelper, { uniqBy } from '../utils/helper';
+import { uniqBy } from '../utils/helper';
 import logger from '../utils/logger';
 import cardObjects from './cardObjects';
 
 class MouseDrawer {
-  helper = new SangoHelper();
   container: any;
   clickedNodeFrom: IDrawClickedNodeFrom | null = null;
   movingLine: any = null;
