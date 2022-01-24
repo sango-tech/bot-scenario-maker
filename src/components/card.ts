@@ -104,7 +104,6 @@ export default class Card {
 
   renderHTML() {
     const html = `
-    <div class="sgbmk__card" id="${this.elementId}" style="left: ${this.card.left}px; top: ${this.card.top}px;">
       <div class="sgbmk__card__title" id="${this.moveControlElementId}">
         <span class="sgbmk__card__title__badge">${this.card.titleBadge}</span>
         ${this.card.title}
@@ -118,12 +117,17 @@ export default class Card {
         ${this.renderEditButton()}
         ${this.renderAddNextButton()}
       </div>
-
       ${this.renderCardNodes()}
-    </div>
     `;
 
-    this.container.innerHTML += html;
+    const cardEl = document.createElement('div');
+    cardEl.classList.add('sgbmk__card');
+    cardEl.id = this.elementId;
+    cardEl.innerHTML = html;
+    cardEl.style.left = `${this.card.left}px`;
+    cardEl.style.top = `${this.card.left}px`;
+
+    this.container.appendChild(cardEl);
   }
 
   renderAnswers() {
