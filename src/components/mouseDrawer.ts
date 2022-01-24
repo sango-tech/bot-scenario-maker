@@ -98,7 +98,7 @@ class MouseDrawer {
     const that = this;
     document.addEventListener('click', function (event) {
       const target = event.target as any;
-      if (!target || !target.id) {
+      if (!target) {
         return;
       }
 
@@ -176,8 +176,9 @@ class MouseDrawer {
     // Remove current line before moving
     const currentLine = cardObjects.lines[lineId];
     if (currentLine) {
-      logger.warn('Unknown moving line');
       currentLine.remove();
+    } else {
+      logger.warn('Unknown moving line');
     }
   };
 
