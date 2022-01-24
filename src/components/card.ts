@@ -1,5 +1,5 @@
 import { IAnswer, ICard } from 'src/types';
-import { debouce } from 'src/utils/helper';
+import { debouce, randomString } from 'src/utils/helper';
 import logger from 'src/utils/logger';
 import bus from './bus';
 import cardType from './cardType';
@@ -241,7 +241,7 @@ export default class Card {
     }
 
     return `
-      <a id="${this.addNextButtonId}" class="sgbmk-btn" data-unique-id="${this.uniqueId}">
+      <a id="${this.addNextButtonId}" class="sgbmk-btn sgbmk-btn-add" data-unique-id="${this.uniqueId}">
         <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" class="svg-inline--fa fa-plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z"></path></svg>
         ${this.renderMenuAnswerNext()}
       </a>
@@ -253,12 +253,13 @@ export default class Card {
     for (const cardType of this.cardTypes) {
       let subMenu = '';
       for (const answer of this.answers) {
+        const elId = randomString();
         subMenu += `
           <li
             data-card-type="${cardType.name}"
             data-answer-id="${answer.id}">
-            <input type="checkbox" value="${answer.id}" />
-            <label>${answer.title}</label>
+            <input type="checkbox" value="${answer.id}" id="${elId}" />
+            <label for="${elId}">${answer.title}</label>
           </li>
         `;
       }
@@ -266,15 +267,15 @@ export default class Card {
       html += `
         <li>
           <span>${cardType.displayText}</span>
-          <ul>
+          <ul class="sgbmk-second-menu">
             ${subMenu}
 
-            <input type="button" class="${this.nextBtnCls}" value="Next" data-card-type="${cardType.name}" />
+            <input type="button" class="${this.nextBtnCls} sgbmk-btn-next" value="Next" data-card-type="${cardType.name}" />
           </ul>
         </li>
       `;
     }
 
-    return `<ul>${html}</ul>`;
+    return `<ul class="sgbmk-top-menu">${html}</ul>`;
   };
 }
