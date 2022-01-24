@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html>
-  <body>
+  <body style="height: 100vh;">
     <script src="/js/sango.bot-flows-maker.js"></script>
 
-    <div id="botFlowContainer" style="height: 100vh;"></div>
-
     <script>
-      const container = document.getElementById('botFlowContainer');
+      const container = document.body;
       const chatbotFlow = Sango.ChatBotFlowsMaker(container);
       chatbotFlow.setCardTypes([
         {

@@ -99,6 +99,7 @@ class CardObjects {
           });
 
           this.addLine(lineId, line);
+          this.registerLineRemoveEvent(lineId, cardObject.uniqueId, answer.id, nextCard.uniqueId);
         }
       }
     }
@@ -122,6 +123,29 @@ class CardObjects {
 
     // First load re position all line
     this.rePosition();
+  };
+
+  registerLineRemoveEvent = (lineId: string, uniqueId: string, answerId: string, nextUniqueId: string) => {
+    const lineEl = document.getElementById(lineId);
+    const that = this;
+    lineEl?.querySelector('.leader-line-end-label')?.addEventListener('click', function () {
+      that.lines[lineId].remove();
+      that.items.map((item) => {
+        if (item.uniqueId === uniqueId) {
+          item.answers?.map((answer) => {
+            if (answer.id === answerId) {
+              answer.nextCards = answer.nextCards.filter((nextCard) => nextCard.uniqueId !== nextUniqueId);
+            }
+
+            return answer;
+          });
+        }
+
+        return item;
+      });
+
+      that.triggerChanged();
+    });
   };
 
   addLine = (lineId: string, line: any) => {
