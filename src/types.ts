@@ -19,6 +19,7 @@ export interface ICard {
   uniqueId: string;
   title: string;
   titleBadge?: string;
+  cardType:string
   left: number;
   top: number;
   answers: IAnswer[];
