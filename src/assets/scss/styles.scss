@@ -41,6 +41,7 @@
     max-width: 230px;
     background: #d8d8d8;
     &:hover {
+      z-index: 1000;
       #{$card} {
         &__node {
           opacity: 1;
@@ -124,7 +125,6 @@
     ul {
       background: #fff;
       border: 1px solid #ccc;
-      z-index: 1000;
       margin: 0;
       padding: 0;
       min-width: 150px;
