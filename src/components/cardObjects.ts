@@ -8,7 +8,6 @@ import bus from './bus';
 class CardObjects {
   items: Card[] = [];
   lines: ILine = {};
-  onChangeCallback!: Function;
 
   addCard(item: Card) {
     this.items.push(item);
@@ -29,12 +28,7 @@ class CardObjects {
   removeCard = (uniqueId: string) => {
     logger.log(`Remove card clicked, uniqueId: ${uniqueId}`);
     this.items = this.items.filter((item) => item.uniqueId !== uniqueId);
-    if (this.onChangeCallback) {
-      const newVal = this.getValue();
-      this.onChangeCallback(newVal);
-      // Emit to client
-      bus.callbackOnChange(newVal);
-    }
+    this.triggerChanged();
   };
 
   getValue = () => {
@@ -56,10 +50,6 @@ class CardObjects {
     }
 
     return newValue;
-  };
-
-  onChange = (callback: Function) => {
-    this.onChangeCallback = callback;
   };
 
   triggerChanged = () => {

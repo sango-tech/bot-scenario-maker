@@ -32,9 +32,8 @@ export class ChatBotFlowsMaker {
 
   render = () => {
     renderer.render();
-    bus.onDeleteCard(cardObjects.removeCard);
-    cardObjects.onChange((newValue: ICard[]) => {
-      console.log(newValue, 'newValue');
+    bus.onDeleteCard((uniqueId: string) => {
+      cardObjects.removeCard(uniqueId);
       renderer.render();
     });
   };
