@@ -1,4 +1,4 @@
-import { ICardAnswer, ICard } from '../types';
+import { ICard, ICardAnswer } from '../types';
 import { debouce, randomString } from '../utils/helper';
 import logger from '../utils/logger';
 import bus from './bus';
