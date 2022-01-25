@@ -1,4 +1,4 @@
-import { IAnswer, ICard } from '../types';
+import { ICardAnswer, ICard } from '../types';
 import { debouce, randomString } from '../utils/helper';
 import logger from '../utils/logger';
 import bus from './bus';
@@ -69,7 +69,7 @@ export default class Card {
     return cardType.cardTypes;
   }
 
-  getAnswerNodeUniqueId(answer: IAnswer) {
+  getAnswerNodeUniqueId(answer: ICardAnswer) {
     return `answer-node-${this.card.uniqueId}-${answer.id}`;
   }
 
@@ -81,7 +81,7 @@ export default class Card {
     return document.getElementById(this.getCardNodeId(index));
   }
 
-  getAnswerNodeEl(answer: IAnswer) {
+  getAnswerNodeEl(answer: ICardAnswer) {
     return document.getElementById(this.getAnswerNodeUniqueId(answer));
   }
 

@@ -2,7 +2,7 @@ import logger from '../utils/logger';
 import Card from './card';
 import PlainDraggable from '../plugins/plain-draggable.min';
 import LeaderLine from '../plugins/leader-line.min';
-import { IAnswer, ICard, ILine, INextCard } from '../types';
+import { ICardAnswer, ICard, ILine, INextCard } from '../types';
 import bus from './bus';
 
 class CardObjects {
@@ -164,7 +164,7 @@ class CardObjects {
     this.lines = {};
   };
 
-  makeLineId = (cardObject: Card, answer: IAnswer, nextCard: INextCard) => {
+  makeLineId = (cardObject: Card, answer: ICardAnswer, nextCard: INextCard) => {
     return `line-${cardObject.uniqueId}-${answer.id}-${nextCard.uniqueId}-${nextCard.nodeIndex}`;
   };
 

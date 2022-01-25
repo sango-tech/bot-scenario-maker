@@ -8,7 +8,7 @@ export interface INextCard {
   uniqueId: string;
 }
 
-export interface IAnswer {
+export interface ICardAnswer {
   id: string;
   title: string;
   nextCards: INextCard[];
@@ -22,7 +22,7 @@ export interface ICard {
   cardType:string
   left: number;
   top: number;
-  answers: IAnswer[];
+  answers: ICardAnswer[];
 }
 
 export interface IDrawClickedNodeFrom {
