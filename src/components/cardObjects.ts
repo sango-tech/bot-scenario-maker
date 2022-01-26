@@ -31,6 +31,11 @@ class CardObjects {
     this.triggerChanged();
   };
 
+  removeAllCards() {
+    this.items = []
+    this.triggerChanged();
+  }
+
   getValue = () => {
     const newValue: ICard[] = [];
     for (const cardObject of this.items) {

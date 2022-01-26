@@ -9,6 +9,7 @@ class MouseDrawer {
   clickedNodeFrom: IDrawClickedNodeFrom | null = null;
   movingLine: any = null;
   drawDoneCallback!: Function;
+  isRegisteredClickEvent = false
 
   get endMovingNodeId() {
     return 'sgbmk-end-moving-node';
@@ -57,7 +58,11 @@ class MouseDrawer {
 
   init = () => {
     this.addMovingNode();
-    this.regiterMouseClickEvent();
+    if(!this.isRegisteredClickEvent){
+      this.regiterMouseClickEvent();
+      this.isRegisteredClickEvent = true
+    }
+
     return this;
   };
 
@@ -68,8 +73,8 @@ class MouseDrawer {
       return;
     }
 
-    toEl.style.left = `${event.clientX}px`;
-    toEl.style.top = `${event.clientY}px`;
+    toEl.style.left = `${event.clientX + (window.pageXOffset || document.documentElement.scrollLeft)}px`;
+    toEl.style.top = `${event.clientY + (window.pageYOffset || document.documentElement.scrollTop)}px`;
 
     if (!fromEl || !toEl) {
       this.removeDrawingMode();

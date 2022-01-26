@@ -30,6 +30,11 @@ export class ChatBotFlowsMaker {
     return this;
   }
 
+  removeAllCards = () => {
+    cardObjects.removeAllCards();
+    return this;
+  };
+
   render = () => {
     renderer.render();
     bus.onDeleteCard((uniqueId: string) => {
