@@ -95,6 +95,7 @@ class CardObjects {
 
           this.addLine(lineId, line);
           this.registerLineRemoveEvent(lineId, cardObject.uniqueId, answer.id, nextCard.uniqueId);
+          this.registerLineHoverEvent(lineId)
         }
       }
     }
@@ -118,6 +119,20 @@ class CardObjects {
 
     // First load re position all line
     this.rePosition();
+  };
+
+  registerLineHoverEvent = (lineId: string) => {
+    const lineEl = document.getElementById(lineId);
+    const that = this;
+
+    lineEl?.addEventListener('mouseover', function () {
+      const currentLine = that.lines[lineId];
+      currentLine.color= "#266ff8"
+    });
+    lineEl?.addEventListener('mouseout', function () {
+      const currentLine = that.lines[lineId];
+      currentLine.color= "coral"
+    });
   };
 
   registerLineRemoveEvent = (lineId: string, uniqueId: string, answerId: string, nextUniqueId: string) => {
