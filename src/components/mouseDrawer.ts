@@ -1,8 +1,9 @@
-import { IDrawClickedNodeFrom } from '../types';
+import { IDrawClickedNodeFrom, INextCard } from '../types';
 import LeaderLine from '../plugins/leader-line.min';
 import { uniqBy } from '../utils/helper';
 import logger from '../utils/logger';
 import cardObjects from './cardObjects';
+import { constant } from '../utils/constant';
 
 class MouseDrawer {
   container: any;
@@ -192,12 +193,24 @@ class MouseDrawer {
         return cardObject;
       }
 
+      if(this.clickedNodeFrom.answerId === constant.any){
+        cardObject.card.answers.forEach((item) =>{
+          item.nextCards = []
+        })
+      }else{
+        cardObject.card.answers.forEach((item) =>{
+          if(item.id === constant.any){
+            item.nextCards = []
+          }
+        })
+      }
+
       cardObject.card.answers.map((answer) => {
         if (answer.id !== this.clickedNodeFrom?.answerId) {
           return answer;
         }
 
-        const nextCards = answer.nextCards || [];
+        const nextCards:INextCard[] = [];
         nextCards.unshift({
           uniqueId: nextUniqueId,
           nodeIndex: nodeIndex,

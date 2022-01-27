@@ -7,8 +7,6 @@ import cardType from './cardType';
 export default class Card {
   card!: ICard;
   container!: any;
-  isRegisteredEditClickEvent = false
-  isRegisteredDeleteClickEvent = false
 
   constructor(container: any, card: ICard) {
     this.container = container;
@@ -169,11 +167,6 @@ export default class Card {
   }
 
   registerDeleteCardEvent = () => {
-    if(this.isRegisteredDeleteClickEvent){
-      return
-  }
-
-  this.isRegisteredDeleteClickEvent = true
     const that = this;
     debouce(() => {
       this.deleteButtonEl?.addEventListener('click', function () {
@@ -185,11 +178,6 @@ export default class Card {
   };
 
   registerEditCardEvent = () => {
-    if(this.isRegisteredEditClickEvent){
-        return
-    }
-
-    this.isRegisteredEditClickEvent = true
     const that = this;
     debouce(() => {
       this.editButtonEl?.addEventListener('click', function () {
