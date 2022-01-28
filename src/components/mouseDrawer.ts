@@ -239,7 +239,9 @@ class MouseDrawer {
         return;
       }
 
-      endMoveingNode.style.cssText = `left: ${e.clientX}px; top:  ${e.clientY}px;`;
+      var x = e.clientX + (window.pageXOffset || document.documentElement.scrollLeft)
+      var y = e.clientY + (window.pageYOffset || document.documentElement.scrollTop)
+      endMoveingNode.style.cssText = `left: ${x}px; top:  ${y}px;`;
       this.movingLine.position();
     });
   };
