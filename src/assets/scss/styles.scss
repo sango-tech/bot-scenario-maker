@@ -179,3 +179,6 @@
     fill: #000 !important;
   }
 }
+svg *{
+  pointer-events:auto;
+}
