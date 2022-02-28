@@ -10,10 +10,12 @@ import renderer from './components/renderer';
 
 export class ChatBotFlowsMaker {
   container: any;
+  isReadOnly:boolean
 
-  constructor(container: any) {
+  constructor(container: any, isReadOnly:boolean=false) {
     logger.debug('Init...');
     this.container = container || document.body;
+    this.isReadOnly = isReadOnly
     mouseDrawer.setContainer(container);
     return this;
   }
@@ -36,15 +38,15 @@ export class ChatBotFlowsMaker {
   };
 
   render = () => {
-    renderer.render();
+    renderer.render(this.isReadOnly);
     bus.onDeleteCard((uniqueId: string) => {
       cardObjects.removeCard(uniqueId);
-      renderer.render();
+      renderer.render(this.isReadOnly);
     });
   };
 
   reRender() {
-    renderer.render();
+    renderer.render(this.isReadOnly);
   }
 
   onCardEdit = (callback: Function) => {

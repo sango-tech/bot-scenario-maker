@@ -6,9 +6,10 @@ class Renderer {
   callbackOnDeleteCard!: Function;
   callbackOnAddNext!: Function;
 
-  render = () => {
+  render = (isReadOnly:boolean) => {
     this.removeAllCards();
     for (const cardObject of cardObjects.items) {
+      cardObject.isReadOnly = isReadOnly;
       cardObject.render();
     }
 
