@@ -12,6 +12,7 @@ export interface ICardAnswer {
   id: string;
   title: string;
   nextCards: INextCard[];
+  totalUsers?: string;
 }
 
 export interface ICard {

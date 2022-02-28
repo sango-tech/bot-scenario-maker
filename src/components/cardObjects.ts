@@ -89,6 +89,7 @@ class CardObjects {
 
           const line = new LeaderLine(fromEl, toEl, {
             lineId,
+            startLabel: (LeaderLine as any).captionLabel(answer.totalUsers),
             middleLabel: (LeaderLine as any).captionLabel(answer.title),
             endLabel: (LeaderLine as any).pathLabel('×'),
           });
@@ -96,6 +97,7 @@ class CardObjects {
           this.addLine(lineId, line);
           this.registerLineRemoveEvent(lineId, cardObject.uniqueId, answer.id, nextCard.uniqueId);
           this.registerLineHoverEvent(lineId)
+          this.updatePostionStartLabel(lineId)
         }
       }
     }
@@ -133,6 +135,19 @@ class CardObjects {
       const currentLine = that.lines[lineId];
       currentLine.color= "coral"
     });
+  };
+
+  updatePostionStartLabel = (lineId: string) => {
+    const svg = document.getElementById(lineId)
+    const texts = svg?.querySelectorAll('text:not(.leader-line-end-label)')
+    if (texts && texts.length >1){
+      const middleLabel = texts[1] as SVGTextElement
+      const startLabel = texts[0] as SVGTextElement
+      const y = (parseInt(middleLabel.getAttribute("y")??"0") + 20).toString() + "px"
+      const x = (parseInt(middleLabel.getAttribute("x")??"0")).toString() + "px"
+      startLabel.setAttribute("y", y)
+      startLabel.setAttribute("x", x)
+    }
   };
 
   registerLineRemoveEvent = (lineId: string, uniqueId: string, answerId: string, nextUniqueId: string) => {
