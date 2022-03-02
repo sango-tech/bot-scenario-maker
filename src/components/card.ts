@@ -161,15 +161,9 @@ export default class Card {
     {
       return html;
     }
-
-    let totalUsers = 0
-    for (let i = 0; i < this.card.answers.length; i++) {
-      const answer = this.card.answers[i];
-      totalUsers = totalUsers + answer.totalUsers
-    }
     html += `
         <div class="sgbmk__card__answers__item sgbmk-total-user">
-          <div class="sgbmk__card__answers__item__title sgbmk-ellipsis">${totalUsers} users</div>
+          <div class="sgbmk__card__answers__item__title sgbmk-ellipsis">${this.card.totalUsers} users</div>
         </div>
       `;
 
