@@ -1,5 +1,8 @@
 .sgbmk {
   $parent: &;
+  &-total-user {
+    border: 3px #31ccec solid !important;
+  }
   &-ellipsis {
     white-space: nowrap;
     overflow: hidden;

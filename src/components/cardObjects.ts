@@ -86,18 +86,20 @@ class CardObjects {
           toEl.setAttribute('data-from-card-unique-id', cardObject.uniqueId);
           toEl.setAttribute('data-from-answer-id', answer.id);
           toEl.setAttribute('data-line-id', lineId);
-
           const line = new LeaderLine(fromEl, toEl, {
             lineId,
-            startLabel: (LeaderLine as any).captionLabel(answer.totalUsers),
             middleLabel: (LeaderLine as any).captionLabel(answer.title),
-            endLabel: (LeaderLine as any).pathLabel('×'),
           });
 
           this.addLine(lineId, line);
-          this.registerLineRemoveEvent(lineId, cardObject.uniqueId, answer.id, nextCard.uniqueId);
+          if(cardObject.isReport){
+            this.renderTotalUsers(lineId, answer)
+          }else{
+            this.lines[lineId].endLabel = (LeaderLine as any).pathLabel('×')
+            this.registerLineRemoveEvent(lineId, cardObject.uniqueId, answer.id, nextCard.uniqueId);
+          }
+
           this.registerLineHoverEvent(lineId)
-          this.updatePostionStartLabel(lineId)
         }
       }
     }
@@ -137,12 +139,18 @@ class CardObjects {
     });
   };
 
-  updatePostionStartLabel = (lineId: string) => {
+  renderTotalUsers = (lineId: string,  answer:ICardAnswer) => {
+    if( answer.totalUsers <= 0){
+      return;
+    }
+    const totalUsers = `${answer.totalUsers} users`
+    this.lines[lineId].startLabel = (LeaderLine as any).captionLabel(totalUsers)
+
     const svg = document.getElementById(lineId)
     const texts = svg?.querySelectorAll('text:not(.leader-line-end-label)')
     if (texts && texts.length >1){
-      const middleLabel = texts[1] as SVGTextElement
-      const startLabel = texts[0] as SVGTextElement
+      const middleLabel = texts[0] as SVGTextElement
+      const startLabel = texts[1] as SVGTextElement
       const y = (parseInt(middleLabel.getAttribute("y")??"0") + 20).toString() + "px"
       const x = (parseInt(middleLabel.getAttribute("x")??"0")).toString() + "px"
       startLabel.setAttribute("y", y)

@@ -7,12 +7,12 @@ import cardType from './cardType';
 export default class Card {
   card!: ICard;
   container!: any;
-  isReadOnly:boolean
+  isReport:boolean
 
-  constructor(container: any, card: ICard, isReadOnly:boolean= false) {
+  constructor(container: any, card: ICard, isReport:boolean= false) {
     this.container = container;
     this.card = card;
-    this.isReadOnly = isReadOnly
+    this.isReport = isReport
   }
 
   get uniqueId() {
@@ -112,8 +112,8 @@ export default class Card {
       </div>
       <div class="sgbmk__card__answers">
         ${this.renderAnswers()}
+        ${this.renderTotalUsers()}
       </div>
-
       <div class="sgbmk__card__actions">
         ${this.renderDeleteButton()}
         ${this.renderEditButton()}
@@ -151,6 +151,27 @@ export default class Card {
         </div>
       `;
     }
+
+    return html;
+  }
+
+  renderTotalUsers() {
+    let html = '';
+    if(!this.isReport)
+    {
+      return html;
+    }
+
+    let totalUsers = 0
+    for (let i = 0; i < this.card.answers.length; i++) {
+      const answer = this.card.answers[i];
+      totalUsers = totalUsers + answer.totalUsers
+    }
+    html += `
+        <div class="sgbmk__card__answers__item sgbmk-total-user">
+          <div class="sgbmk__card__answers__item__title sgbmk-ellipsis">${totalUsers} users</div>
+        </div>
+      `;
 
     return html;
   }
@@ -226,7 +247,7 @@ export default class Card {
   };
 
   renderEditButton() {
-    if(this.isReadOnly)
+    if(this.isReport)
     {
       return '';
     }
@@ -239,7 +260,7 @@ export default class Card {
   }
 
   renderDeleteButton() {
-    if(this.isReadOnly)
+    if(this.isReport)
     {
       return '';
     }
@@ -256,7 +277,7 @@ export default class Card {
       return '';
     }
 
-    if(this.isReadOnly)
+    if(this.isReport)
     {
       return '';
     }

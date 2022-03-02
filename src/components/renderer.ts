@@ -5,21 +5,21 @@ class Renderer {
   callbackOnEditCard!: Function;
   callbackOnDeleteCard!: Function;
   callbackOnAddNext!: Function;
-
-  render = (isReadOnly:boolean) => {
+  render = (isReport:boolean) => {
     this.removeAllCards();
     for (const cardObject of cardObjects.items) {
-      cardObject.isReadOnly = isReadOnly;
+      cardObject.isReport = isReport;
       cardObject.render();
     }
 
     cardObjects.connectObjectsByLines();
     cardObjects.initDraggableCards();
-    this.registerMouseDrawer();
+
+    this.registerMouseDrawer(isReport);
   };
 
-  registerMouseDrawer = () => {
-    mouseDrawer.init();
+  registerMouseDrawer = (isReport:boolean) => {
+    mouseDrawer.init(isReport);
     // Redraw lines after mouse event done
     mouseDrawer.setDrawDoneCallback(cardObjects.connectObjectsByLines);
   };

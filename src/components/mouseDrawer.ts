@@ -11,6 +11,7 @@ class MouseDrawer {
   movingLine: any = null;
   drawDoneCallback!: Function;
   isRegisteredClickEvent = false
+  isReport:boolean = false
 
   get endMovingNodeId() {
     return 'sgbmk-end-moving-node';
@@ -57,8 +58,10 @@ class MouseDrawer {
     this.reDrawnAll();
   };
 
-  init = () => {
+  init = (isReport:boolean) => {
     this.addMovingNode();
+    this.isReport = isReport
+
     if(!this.isRegisteredClickEvent){
       this.regiterMouseClickEvent();
       this.isRegisteredClickEvent = true
@@ -107,17 +110,20 @@ class MouseDrawer {
         return;
       }
 
-      // Clicked to answer node
-      if (target.id.indexOf('answer-node') >= 0) {
-        that.handleAnswerNodeClick(event);
-        return;
+      if(!that.isReport){
+        // Clicked to answer node
+        if (target.id.indexOf('answer-node') >= 0) {
+          that.handleAnswerNodeClick(event);
+          return;
+        }
+
+        // Clicked to answer node
+        if (target.id.indexOf('card-node') >= 0) {
+          that.handleEndNodeClick(event);
+          return;
+        }
       }
 
-      // Clicked to answer node
-      if (target.id.indexOf('card-node') >= 0) {
-        that.handleEndNodeClick(event);
-        return;
-      }
 
       that.removeDrawingMode();
     });
