@@ -11,18 +11,30 @@ import renderer from './components/renderer';
 export class ChatBotFlowsMaker {
   container: any;
   isReadOnly:boolean
+  btnNext:HTMLButtonElement
+  btnAdd:HTMLButtonElement
+  btnEdit:HTMLButtonElement
+  btnDelete:HTMLButtonElement
 
-  constructor(container: any, isReadOnly:boolean=false) {
+  constructor(container: any, isReadOnly:boolean=false, btnNext:HTMLButtonElement
+    , btnAdd: HTMLButtonElement
+    , btnEdit: HTMLButtonElement
+    , btnDelete: HTMLButtonElement) {
     logger.debug('Init...');
     this.container = container || document.body;
     this.isReadOnly = isReadOnly
+    this.btnNext = btnNext
+    this.btnAdd = btnAdd
+    this.btnEdit = btnEdit
+    this.btnDelete = btnDelete
+
     mouseDrawer.setContainer(container);
     return this;
   }
 
   addCard = (item: ICard) => {
     logger.log('Added card', item);
-    const card = new Card(this.container, item);
+    const card = new Card(this.container, item, false, this.btnNext, this.btnAdd, this.btnEdit, this.btnDelete);
     cardObjects.addCard(card);
     return this;
   };
