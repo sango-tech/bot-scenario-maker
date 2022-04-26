@@ -117,9 +117,9 @@ class MouseDrawer {
           return;
         }
 
-        // Clicked to answer node
-        if (target.id.indexOf('card-node') >= 0) {
-          that.handleEndNodeClick(event);
+        const parentNode = that.getParentNode(target)
+        if(parentNode){
+          that.handleEndNodeClick(event, parentNode);
           return;
         }
       }
@@ -128,6 +128,17 @@ class MouseDrawer {
       that.removeDrawingMode();
     });
   };
+
+  getParentNode=(child:HTMLElement)=> {
+    let node = child.parentNode as HTMLElement;
+    while (node != null) {
+        if (node.classList.contains("sgbmk__card")) {
+            return node;
+        }
+        node = node.parentNode as HTMLElement;
+    }
+    return null;
+}
 
   handleAnswerNodeClick = (event: MouseEvent) => {
     if (this.clickedNodeFrom) {
@@ -148,15 +159,22 @@ class MouseDrawer {
   };
 
   // User click to end node to connect answer to next card
-  handleEndNodeClick = (event: MouseEvent) => {
+  handleEndNodeClick = (event: MouseEvent, parentNode: HTMLElement) => {
     if (!this.clickedNodeFrom) {
       this.handleInitMoveExistLine(event);
       return;
     }
 
-    const endNodeEl = event.target as HTMLElement;
-    const nextUniqueId = endNodeEl.getAttribute('data-card-unique-id');
-    const nodeIndex = endNodeEl.getAttribute('data-node-index');
+    let endNodeEl = event.target as HTMLElement;
+    let nextUniqueId = endNodeEl.getAttribute('data-card-unique-id');
+    let nodeIndex = endNodeEl.getAttribute('data-node-index');
+
+    if(!nodeIndex){
+      endNodeEl  = parentNode
+      nextUniqueId = parentNode.id
+      nodeIndex = "7"
+    }
+
     if (!nextUniqueId || !nodeIndex) {
       return;
     }
