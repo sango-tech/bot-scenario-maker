@@ -119,7 +119,7 @@ export default class Card {
     const html = `
       <div class="sgbmk__card__title" id="${this.moveControlElementId}">
         <span class="sgbmk__card__title__badge">${this.card.titleBadge}</span>
-        ${this.card.title} - ${this.card.uniqueId}
+        ${this.card.title}
       </div>
       <div class="sgbmk__card__answers">
         ${this.renderAnswers()}
