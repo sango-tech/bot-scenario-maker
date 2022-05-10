@@ -119,7 +119,8 @@ export default class Card {
     const html = `
       <div class="sgbmk__card__title" id="${this.moveControlElementId}">
         <span class="sgbmk__card__title__badge">${this.card.titleBadge}</span>
-        ${this.card.title}
+        ${this.card.title}<br>
+        ${this.card.displayId}
       </div>
       <div class="sgbmk__card__answers">
         ${this.renderAnswers()}
@@ -312,10 +313,10 @@ export default class Card {
         `;
       }
 
-      const btn = this.btnNext.cloneNode(true) as HTMLButtonElement
-      btn.classList.add(this.nextBtnCls)
-      btn.classList.add("sgbmk-btn-next")
-      btn.setAttribute("data-card-type", cardType.name);
+     const btn = this.btnNext.cloneNode(true) as HTMLButtonElement
+     btn.classList.add(this.nextBtnCls)
+     btn.classList.add("sgbmk-btn-next")
+     btn.setAttribute("data-card-type", cardType.name);
       html += `
         <li>
           <span>${cardType.displayText}</span>

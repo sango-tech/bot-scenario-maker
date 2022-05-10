@@ -18,6 +18,7 @@ export interface ICardAnswer {
 export interface ICard {
   id: string;
   uniqueId: string;
+  displayId: string;
   title: string;
   titleBadge?: string;
   cardType:string
