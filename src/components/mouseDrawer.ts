@@ -132,7 +132,7 @@ class MouseDrawer {
   getParentNode=(child:HTMLElement)=> {
     let node = child.parentNode as HTMLElement;
     while (node != null) {
-        if (node.classList.contains("sgbmk__card")) {
+        if (node.classList && node.classList.contains("sgbmk__card")) {
             return node;
         }
         node = node.parentNode as HTMLElement;
