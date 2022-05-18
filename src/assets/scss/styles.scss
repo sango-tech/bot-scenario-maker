@@ -44,6 +44,9 @@
     min-width: 100px;
     max-width: 230px;
     background: #d8d8d8;
+    &.active {
+      z-index: 1;
+    }
     &:hover {
       // z-index: 1000;
       #{$card} {
@@ -164,7 +167,7 @@
     }
     &:hover {
       .sgbmk-top-menu {
-        display: block;
+        // display: block;
       }
     }
     .sgbmk-btn-next {
@@ -184,4 +187,8 @@
 }
 svg *{
   pointer-events:auto;
+}
+
+.display-block {
+  display: block !important;
 }

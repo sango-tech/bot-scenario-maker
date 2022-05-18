@@ -110,6 +110,8 @@ class MouseDrawer {
         return;
       }
 
+      that.handleAddNexCard(target)
+
       if(!that.isReport){
         // Clicked to answer node
         if (target.id.indexOf('answer-node') >= 0) {
@@ -117,28 +119,53 @@ class MouseDrawer {
           return;
         }
 
-        const parentNode = that.getParentNode(target)
+        const parentNode = that.getParentNode(target, "sgbmk__card")
         if(parentNode){
           that.handleEndNodeClick(event, parentNode);
           return;
         }
       }
-
-
       that.removeDrawingMode();
     });
   };
 
-  getParentNode=(child:HTMLElement)=> {
+  handleAddNexCard=(target:HTMLElement)=> {
+    const parent = this.getParentNode(target, "sgbmk-btn-add")
+    const uniqueId = parent?.getAttribute('data-unique-id');
+    const ulEls =document.querySelectorAll('.sgbmk-top-menu');
+    ulEls.forEach(element => {
+      const currentUniqueId = element.parentElement?.getAttribute('data-unique-id');
+      if(uniqueId !== currentUniqueId){
+        element.classList.remove("display-block")
+      }
+    });
+
+    const cards =document.querySelectorAll('.sgbmk__card');
+    cards.forEach(element => {
+      element.classList.remove("active")
+    });
+
+    if(uniqueId) {
+      const ul =parent?.querySelector('.sgbmk-top-menu');
+      ul?.classList.add("display-block")
+
+      const parentNode = this.getParentNode(target, "sgbmk__card")
+      if(parentNode){
+        parentNode.classList.add("active")
+      }
+    }
+  }
+
+  getParentNode=(child:HTMLElement, cls:string)=> {
     let node = child.parentNode as HTMLElement;
     while (node != null) {
-        if (node.classList && node.classList.contains("sgbmk__card")) {
+        if (node.classList && node.classList.contains(cls)) {
             return node;
         }
         node = node.parentNode as HTMLElement;
     }
     return null;
-}
+  }
 
   handleAnswerNodeClick = (event: MouseEvent) => {
     if (this.clickedNodeFrom) {

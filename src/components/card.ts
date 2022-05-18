@@ -320,7 +320,7 @@ export default class Card {
       html += `
         <li>
           <span>${cardType.displayText}</span>
-          <ul class="sgbmk-second-menu">
+          <ul class="sgbmk-second-menu" data-unique-id="${this.uniqueId}">
             ${subMenu}
             ${btn.outerHTML}
           </ul>
@@ -328,6 +328,6 @@ export default class Card {
       `;
     }
 
-    return `<ul class="sgbmk-top-menu">${html}</ul>`;
+    return `<ul class="sgbmk-top-menu" data-unique-id="${this.uniqueId}">${html}</ul>`;
   };
 }
