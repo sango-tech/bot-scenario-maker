@@ -153,22 +153,12 @@
       position: absolute;
       display: none;
       top: 0;
-      li:hover {
-        .sgbmk-second-menu {
-          display: block;
-        }
-      }
     }
     .sgbmk-second-menu {
       position: absolute;
       left: 100%;
       top: 0;
       display: none;
-    }
-    &:hover {
-      .sgbmk-top-menu {
-        // display: block;
-      }
     }
     .sgbmk-btn-next {
       margin: 5px;
@@ -191,4 +181,7 @@ svg *{
 
 .display-block {
   display: block !important;
+}
+.display-none {
+  display: none !important;
 }

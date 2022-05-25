@@ -153,6 +153,25 @@ class MouseDrawer {
       if(parentNode){
         parentNode.classList.add("active")
       }
+
+      const secondMenu = parent?.querySelectorAll(".sgbmk-second-menu")
+      if(secondMenu){
+        secondMenu?.forEach(element => {
+          element.classList.add("display-none")
+        });
+        let secondParentNode ;
+        if(target.classList.contains("sgbmk-second-item")){
+          secondParentNode = target
+        }else{
+          secondParentNode =this.getParentNode(target, "sgbmk-second-item")
+        }
+
+       const secondUl = secondParentNode?.querySelector(".sgbmk-second-menu")
+       if(secondUl){
+        secondUl?.classList.remove("display-none")
+        secondUl?.classList.add("display-block")
+       }
+      }
     }
   }
 

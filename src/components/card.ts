@@ -318,7 +318,7 @@ export default class Card {
      btn.classList.add("sgbmk-btn-next")
      btn.setAttribute("data-card-type", cardType.name);
       html += `
-        <li>
+        <li class="sgbmk-second-item">
           <span>${cardType.displayText}</span>
           <ul class="sgbmk-second-menu" data-unique-id="${this.uniqueId}">
             ${subMenu}
