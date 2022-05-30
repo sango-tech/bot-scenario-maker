@@ -12,6 +12,7 @@ class MouseDrawer {
   drawDoneCallback!: Function;
   isRegisteredClickEvent = false
   isReport:boolean = false
+  zoomLevel = 100
 
   get endMovingNodeId() {
     return 'sgbmk-end-moving-node';
@@ -20,6 +21,11 @@ class MouseDrawer {
   get movingNodeCls() {
     return 'sgbmk-draw-moving-node';
   }
+
+  setZoomLevel(level: any) {
+    this.zoomLevel = level;
+  }
+
 
   setContainer(container: any) {
     this.container = container;
@@ -110,8 +116,6 @@ class MouseDrawer {
         return;
       }
 
-      that.handleAddNexCard(target)
-
       if(!that.isReport){
         // Clicked to answer node
         if (target.id.indexOf('answer-node') >= 0) {
@@ -128,52 +132,6 @@ class MouseDrawer {
       that.removeDrawingMode();
     });
   };
-
-  handleAddNexCard=(target:HTMLElement)=> {
-    const parent = this.getParentNode(target, "sgbmk-btn-add")
-    const uniqueId = parent?.getAttribute('data-unique-id');
-    const ulEls =document.querySelectorAll('.sgbmk-top-menu');
-    ulEls.forEach(element => {
-      const currentUniqueId = element.parentElement?.getAttribute('data-unique-id');
-      if(uniqueId !== currentUniqueId){
-        element.classList.remove("display-block")
-      }
-    });
-
-    const cards =document.querySelectorAll('.sgbmk__card');
-    cards.forEach(element => {
-      element.classList.remove("active")
-    });
-
-    if(uniqueId) {
-      const ul =parent?.querySelector('.sgbmk-top-menu');
-      ul?.classList.add("display-block")
-
-      const parentNode = this.getParentNode(target, "sgbmk__card")
-      if(parentNode){
-        parentNode.classList.add("active")
-      }
-
-      const secondMenu = parent?.querySelectorAll(".sgbmk-second-menu")
-      if(secondMenu){
-        secondMenu?.forEach(element => {
-          element.classList.add("display-none")
-        });
-        let secondParentNode ;
-        if(target.classList.contains("sgbmk-second-item")){
-          secondParentNode = target
-        }else{
-          secondParentNode =this.getParentNode(target, "sgbmk-second-item")
-        }
-
-       const secondUl = secondParentNode?.querySelector(".sgbmk-second-menu")
-       if(secondUl){
-        secondUl?.classList.remove("display-none")
-        secondUl?.classList.add("display-block")
-       }
-      }
-    }
-  }
 
   getParentNode=(child:HTMLElement, cls:string)=> {
     let node = child.parentNode as HTMLElement;
@@ -311,6 +269,9 @@ class MouseDrawer {
 
       var x = e.clientX + (window.pageXOffset || document.documentElement.scrollLeft)
       var y = e.clientY + (window.pageYOffset || document.documentElement.scrollTop)
+      const scale = this.zoomLevel/100
+      y = y - 48*scale
+      x = x + (x-x*scale)
       endMoveingNode.style.cssText = `left: ${x}px; top:  ${y}px;`;
       this.movingLine.position();
     });

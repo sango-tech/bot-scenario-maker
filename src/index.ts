@@ -15,6 +15,7 @@ export class ChatBotFlowsMaker {
   btnAdd:HTMLButtonElement
   btnEdit:HTMLButtonElement
   btnDelete:HTMLButtonElement
+  currentZoom = 100;
 
   constructor(container: any, isReadOnly:boolean=false, btnNext:HTMLButtonElement
     , btnAdd: HTMLButtonElement
@@ -69,11 +70,20 @@ export class ChatBotFlowsMaker {
     bus.onChange(callback);
   };
 
-  onAddNextClicked = (callback: Function) => {
-    bus.onAddNext(callback);
+  onAddCard = (callback: Function) => {
+    bus.onAddCard(callback);
   };
 
   setCardTypes = (cardTypes: ICardType[]) => {
     cardType.setCardTypes(cardTypes);
+  };
+
+  setZoomLevel = (level:number) => {
+    this.currentZoom = level;
+    mouseDrawer.setZoomLevel(level);
+  };
+
+  getZoomLevel = () => {
+    return this.currentZoom
   };
 }

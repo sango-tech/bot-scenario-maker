@@ -1,5 +1,5 @@
 import { ICard, ICardAnswer } from '../types';
-import { debouce, randomString } from '../utils/helper';
+import { debouce } from '../utils/helper';
 import logger from '../utils/logger';
 import bus from './bus';
 import cardType from './cardType';
@@ -112,7 +112,7 @@ export default class Card {
     this.renderHTML();
     this.registerDeleteCardEvent();
     this.registerEditCardEvent();
-    this.registerNextAddNextCardEvent();
+    this.registerAddCardEvent()
   }
 
   renderHTML() {
@@ -194,6 +194,18 @@ export default class Card {
     return html;
   }
 
+  registerAddCardEvent = () => {
+    const that = this;
+    debouce(() => {
+      this.addNextButtonEl?.addEventListener('click', function () {
+        if (bus.callbackOnAddCard) {
+          bus.callbackOnAddCard(that.uniqueId);
+        }
+      });
+    }, 500);
+  };
+
+
   registerDeleteCardEvent = () => {
     const that = this;
     debouce(() => {
@@ -213,41 +225,6 @@ export default class Card {
           bus.callbackOnEditCard(that.uniqueId);
         }
       });
-    }, 500);
-  };
-
-  registerNextAddNextCardEvent = () => {
-    debouce(() => {
-      const nextBtns = document.querySelectorAll(`.${this.nextBtnCls}`);
-      if (!nextBtns || !bus.callbackOnAddNext) {
-        return;
-      }
-
-      const that = this;
-      for (var i = 0; i < nextBtns.length; i++) {
-        const nextBtn = nextBtns[i];
-        nextBtn.addEventListener('click', function (event) {
-          const selectedAnswerIds: string[] = [];
-          let cardType;
-
-          const target = event.target as HTMLElement;
-          cardType = target.getAttribute('data-card-type');
-
-          const checkboxs = target.parentElement?.querySelectorAll('input[type="checkbox"]');
-          if (!checkboxs) {
-            return;
-          }
-
-          for (var i = 0; i < checkboxs.length; i++) {
-            const checkbox = checkboxs[i] as any;
-            if (checkbox.checked) {
-              selectedAnswerIds.push(checkbox.value);
-            }
-          }
-
-          bus.callbackOnAddNext({ cardType, uniqueId: that.uniqueId, selectedAnswerIds });
-        });
-      }
     }, 500);
   };
 
@@ -292,42 +269,7 @@ export default class Card {
     return `
       <a id="${this.addNextButtonId}" class="sgbmk-btn sgbmk-btn-add" data-unique-id="${this.uniqueId}">
         ${btn.outerHTML}
-        ${this.renderMenuAnswerNext()}
       </a>
     `;
   }
-
-  renderMenuAnswerNext = () => {
-    let html = '';
-    for (const cardType of this.cardTypes) {
-      let subMenu = '';
-      for (const answer of this.answers) {
-        const elId = randomString();
-        subMenu += `
-          <li
-            data-card-type="${cardType.name}"
-            data-answer-id="${answer.id}">
-            <input type="checkbox" value="${answer.id}" id="${elId}" />
-            <label for="${elId}">${answer.title}</label>
-          </li>
-        `;
-      }
-
-     const btn = this.btnNext.cloneNode(true) as HTMLButtonElement
-     btn.classList.add(this.nextBtnCls)
-     btn.classList.add("sgbmk-btn-next")
-     btn.setAttribute("data-card-type", cardType.name);
-      html += `
-        <li class="sgbmk-second-item">
-          <span>${cardType.displayText}</span>
-          <ul class="sgbmk-second-menu" data-unique-id="${this.uniqueId}">
-            ${subMenu}
-            ${btn.outerHTML}
-          </ul>
-        </li>
-      `;
-    }
-
-    return `<ul class="sgbmk-top-menu" data-unique-id="${this.uniqueId}">${html}</ul>`;
-  };
 }
