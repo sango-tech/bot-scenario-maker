@@ -12,7 +12,6 @@ class MouseDrawer {
   drawDoneCallback!: Function;
   isRegisteredClickEvent = false
   isReport:boolean = false
-  zoomLevel = 100
 
   get endMovingNodeId() {
     return 'sgbmk-end-moving-node';
@@ -21,11 +20,6 @@ class MouseDrawer {
   get movingNodeCls() {
     return 'sgbmk-draw-moving-node';
   }
-
-  setZoomLevel(level: any) {
-    this.zoomLevel = level;
-  }
-
 
   setContainer(container: any) {
     this.container = container;
@@ -267,13 +261,16 @@ class MouseDrawer {
         return;
       }
 
-      var x = e.clientX + (window.pageXOffset || document.documentElement.scrollLeft)
-      var y = e.clientY + (window.pageYOffset || document.documentElement.scrollTop)
-      const scale = this.zoomLevel/100
-      y = y - 48*scale
-      x = x + (x-x*scale)
-      endMoveingNode.style.cssText = `left: ${x}px; top:  ${y}px;`;
-      this.movingLine.position();
+      if(this.container){
+        var rect   =  this.container.getBoundingClientRect();
+        var x =  e.clientX  - rect.left;
+        var y =  e.clientY  - rect.top;
+
+        x = (e.clientX- rect.left)* 3000/rect.width;
+        y =(e.clientY - rect.top)*3000/ rect.height;
+        endMoveingNode.style.cssText = `left: ${x}px; top:  ${y}px;`;
+        this.movingLine.position();
+      }
     });
   };
 

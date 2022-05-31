@@ -80,7 +80,6 @@ export class ChatBotFlowsMaker {
 
   setZoomLevel = (level:number) => {
     this.currentZoom = level;
-    mouseDrawer.setZoomLevel(level);
   };
 
   getZoomLevel = () => {
