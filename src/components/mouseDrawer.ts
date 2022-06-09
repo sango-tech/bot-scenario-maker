@@ -12,6 +12,7 @@ class MouseDrawer {
   drawDoneCallback!: Function;
   isRegisteredClickEvent = false
   isReport:boolean = false
+  boundingClientRectBeforeZoom:any
 
   get endMovingNodeId() {
     return 'sgbmk-end-moving-node';
@@ -20,6 +21,10 @@ class MouseDrawer {
   get movingNodeCls() {
     return 'sgbmk-draw-moving-node';
   }
+
+  setBoundingClientRectBeforeZoom = (rect:any) => {
+    this.boundingClientRectBeforeZoom = rect;
+  };
 
   setContainer(container: any) {
     this.container = container;
@@ -262,12 +267,10 @@ class MouseDrawer {
       }
 
       if(this.container){
+        const clientRectDefault = this.boundingClientRectBeforeZoom
         var rect   =  this.container.getBoundingClientRect();
-        var x =  e.clientX  - rect.left;
-        var y =  e.clientY  - rect.top;
-
-        x = (e.clientX- rect.left)* 3000/rect.width;
-        y =(e.clientY - rect.top)*3000/ rect.height;
+        var x = (e.clientX- rect.left)* clientRectDefault.width/rect.width;
+        var y =(e.clientY - rect.top)*clientRectDefault.height/ rect.height;
         endMoveingNode.style.cssText = `left: ${x}px; top:  ${y}px;`;
         this.movingLine.position();
       }

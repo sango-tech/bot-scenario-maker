@@ -30,6 +30,7 @@ export class ChatBotFlowsMaker {
     this.btnDelete = btnDelete
 
     mouseDrawer.setContainer(container);
+    cardObjects.setContainer(container);
     return this;
   }
 
@@ -84,5 +85,13 @@ export class ChatBotFlowsMaker {
 
   getZoomLevel = () => {
     return this.currentZoom
+  };
+
+  getContainer = () => {
+    return this.container
+  };
+
+  setBoundingClientRectBeforeZoom = (rect:any) => {
+    mouseDrawer.setBoundingClientRectBeforeZoom(rect);
   };
 }

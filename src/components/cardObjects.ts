@@ -6,8 +6,13 @@ import { ICardAnswer, ICard, ILine, INextCard } from '../types';
 import bus from './bus';
 
 class CardObjects {
+  container: any;
   items: Card[] = [];
   lines: ILine = {};
+
+  setContainer(container: any) {
+    this.container = container;
+  }
 
   addCard(item: Card) {
     this.items.push(item);
@@ -106,21 +111,34 @@ class CardObjects {
   };
 
   initDraggableCards = () => {
-    for (const cardObject of this.items) {
-      const moveEL = cardObject.el;
-      new PlainDraggable(moveEL, {
-        handle: cardObject.moveControlEl,
-        autoScroll: true,
-        onMove: () => {
-          this.rePosition();
-        },
-        onDragEnd: (evt: any) => {
-          cardObject.setPos(evt.left, evt.top);
-          this.triggerChanged();
-        },
-      });
+    if(this.container){
+      for (const cardObject of this.items) {
+        const moveEL = cardObject.el;
+        new PlainDraggable(moveEL, {
+          handle: cardObject.moveControlEl,
+          autoScroll: false,
+          onMove: () => {
+            this.rePosition();
+          },
+          onDragEnd: (evt: any) => {
+            if(moveEL){
+              // https://stackoverflow.com/questions/49495151/how-to-get-transform-value-of-html-element-in-angular-5
+              var style = window.getComputedStyle(moveEL);
+              var matrix = new WebKitCSSMatrix(style.webkitTransform);
+              // console.log(matrix, "matrix");
+              // console.log('translateX: ', matrix.m41);
+              // console.log('translateY: ', matrix.m42);
+              // console.log("moveEL?.style.left", moveEL.offsetLeft);
+              // console.log("moveEL?.style.top", moveEL.offsetTop);
+              const left = moveEL.offsetLeft + matrix.m41
+              const top = moveEL.offsetTop + matrix.m42
+              cardObject.setPos(left, top);
+              this.triggerChanged();
+            }
+          },
+        });
+      }
     }
-
     // First load re position all line
     this.rePosition();
   };
