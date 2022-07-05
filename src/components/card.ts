@@ -153,11 +153,14 @@ export default class Card {
       const answer = this.card.answers[i];
       html += `
         <div class="sgbmk__card__answers__item">
-          <div class="sgbmk__card__answers__item__title sgbmk-ellipsis">${answer.title}</div>
+          <div class="sgbmk__card__answers__item__title sgbmk-ellipsis"
+          id="${this.getAnswerNodeUniqueId(answer)}"
+          data-card-unique-id="${this.card.uniqueId}"
+          data-answer-id="${answer.id}">${answer.title}</div>
           <div class="sgbmk__card__answers__item__node sgbmk-node"
-            data-card-unique-id="${this.card.uniqueId}"
-            data-answer-id="${answer.id}"
-            id="${this.getAnswerNodeUniqueId(answer)}">
+          data-card-unique-id="${this.card.uniqueId}"
+          data-answer-id="${answer.id}"
+          id="${this.getAnswerNodeUniqueId(answer)}">
           </div>
         </div>
       `;

@@ -117,7 +117,7 @@ class MouseDrawer {
 
       if(!that.isReport){
         // Clicked to answer node
-        if (target.id.indexOf('answer-node') >= 0) {
+        if (!that.clickedNodeFrom && target.id.indexOf('answer-node') >= 0) {
           that.handleAnswerNodeClick(event);
           return;
         }
