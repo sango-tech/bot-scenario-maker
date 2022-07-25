@@ -19,6 +19,9 @@
       background: red;
       transform: scale(1.2);
     }
+    &-not-select {
+      background: red;
+    }
   }
   &-btn {
     border-radius: 100%;

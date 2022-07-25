@@ -144,20 +144,36 @@ export default class Card {
     this.container.appendChild(cardEl);
   }
 
+  getSelectedAnswerId(){
+    for (let i = 0; i < this.card.answers.length; i++) {
+      const answer = this.card.answers[i];
+      if(answer.nextCards.length > 0){
+        return answer.id
+      }
+    }
+     return ""
+  }
+
   renderAnswers() {
     let html = '';
     if (!this.card.answers || !this.card.answers.length) {
       return html;
     }
+
+    const selectId = this.getSelectedAnswerId()
     for (let i = 0; i < this.card.answers.length; i++) {
       const answer = this.card.answers[i];
+      let css = ""
+      if (selectId != 'any' && selectId != answer.id && answer.id != "any") {
+        css = "sgbmk-node-not-select"
+      }
       html += `
         <div class="sgbmk__card__answers__item">
           <div class="sgbmk__card__answers__item__title sgbmk-ellipsis"
           id="${this.getAnswerNodeUniqueId(answer)}"
           data-card-unique-id="${this.card.uniqueId}"
           data-answer-id="${answer.id}">${answer.title}</div>
-          <div class="sgbmk__card__answers__item__node sgbmk-node"
+          <div class="sgbmk__card__answers__item__node sgbmk-node ${css}"
           data-card-unique-id="${this.card.uniqueId}"
           data-answer-id="${answer.id}"
           id="${this.getAnswerNodeUniqueId(answer)}">

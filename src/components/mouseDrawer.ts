@@ -250,6 +250,9 @@ class MouseDrawer {
       return cardObject;
     });
 
+    // https://app.shortcut.com/sango-tech/story/17524/scenario-card-change-dot-color-to-red-if-answer-does-not-has-arrow-and-if-does-not-use-any
+    const card = this.getClickedFromCardObject()
+    card?.render()
     this.reDrawnAll();
     this.removeDrawingMode();
     cardObjects.triggerChanged();
