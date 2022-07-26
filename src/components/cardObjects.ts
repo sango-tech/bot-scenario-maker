@@ -120,16 +120,11 @@ class CardObjects {
           onMove: () => {
             this.rePosition();
           },
-          onDragEnd: (evt: any) => {
+          onDragEnd: () => {
             if(moveEL){
               // https://stackoverflow.com/questions/49495151/how-to-get-transform-value-of-html-element-in-angular-5
               var style = window.getComputedStyle(moveEL);
               var matrix = new WebKitCSSMatrix(style.webkitTransform);
-              // console.log(matrix, "matrix");
-              // console.log('translateX: ', matrix.m41);
-              // console.log('translateY: ', matrix.m42);
-              // console.log("moveEL?.style.left", moveEL.offsetLeft);
-              // console.log("moveEL?.style.top", moveEL.offsetTop);
               const left = moveEL.offsetLeft + matrix.m41
               const top = moveEL.offsetTop + matrix.m42
               cardObject.setPos(left, top);
@@ -195,6 +190,7 @@ class CardObjects {
         return item;
       });
 
+      that.setRedColorNotSelected(uniqueId)
       that.triggerChanged();
     });
   };
@@ -232,6 +228,22 @@ class CardObjects {
   findByUniqueId = (uniqueId: string) => {
     return this.items.find((item) => item.uniqueId === uniqueId);
   };
+
+  setRedColorNotSelected(uniqueId:string){
+    const card = this.items.find((item) => item.uniqueId === uniqueId);
+    const fromNode = document.getElementById(uniqueId);
+    const nodes = fromNode?.querySelectorAll(".sgbmk__card__answers__item__node")
+    console.log(nodes, "nodes");
+
+    nodes?.forEach(el =>{
+      el.classList.remove("sgbmk-node-not-select")
+      const fromAnswerId = el.getAttribute('data-answer-id');
+      const css = card?.getcssRedColorNotSelected(fromAnswerId??"")
+      if (css != "") {
+        el.classList.add(css??"")
+      }
+    })
+  }
 }
 
 export default new CardObjects();

@@ -144,14 +144,37 @@ export default class Card {
     this.container.appendChild(cardEl);
   }
 
-  getSelectedAnswerId(){
+  getcssRedColorNotSelected(id:string){
+    let css = ""
+    if (id == "any"){
+      return css
+    }
+
+    let isAnswer = false
     for (let i = 0; i < this.card.answers.length; i++) {
       const answer = this.card.answers[i];
+      if(answer.nextCards.length > 0 && answer.id == "any"){
+        return css
+      }
+
       if(answer.nextCards.length > 0){
-        return answer.id
+        isAnswer = true
+        break
       }
     }
-     return ""
+
+    if(!isAnswer){
+      return css
+    }
+
+    for (let i = 0; i < this.card.answers.length; i++) {
+      const answer = this.card.answers[i];
+      if(answer.nextCards.length <= 0 && answer.id == id){
+        css = "sgbmk-node-not-select"
+      }
+    }
+
+     return css
   }
 
   renderAnswers() {
@@ -160,13 +183,9 @@ export default class Card {
       return html;
     }
 
-    const selectId = this.getSelectedAnswerId()
     for (let i = 0; i < this.card.answers.length; i++) {
       const answer = this.card.answers[i];
-      let css = ""
-      if (selectId != 'any' && selectId != answer.id && answer.id != "any") {
-        css = "sgbmk-node-not-select"
-      }
+      const css = this.getcssRedColorNotSelected(answer.id)
       html += `
         <div class="sgbmk__card__answers__item">
           <div class="sgbmk__card__answers__item__title sgbmk-ellipsis"
