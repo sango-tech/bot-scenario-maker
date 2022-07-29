@@ -138,8 +138,12 @@ export default class Card {
     else{
       bgTitle = "question-card"
     }
+    let flex = ""
+    if(this.isReport){
+      flex ="display-flex"
+    }
     const html = `
-      <div class="sgbmk__card__title ${bgTitle}" id="${this.moveControlElementId}">
+      <div class="sgbmk__card__title ${bgTitle} ${flex}" id="${this.moveControlElementId}">
        <div class="sgbmk__card__title__header"> <span class="sgbmk__card__title__badge">${this.card.titleBadge}</span>
        ${this.card.title}<br>
        ${this.card.displayId}
