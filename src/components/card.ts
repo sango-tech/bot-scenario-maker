@@ -12,6 +12,7 @@ export default class Card {
   btnAdd:HTMLButtonElement
   btnEdit:HTMLButtonElement
   btnDelete:HTMLButtonElement
+  directionType = 0
 
   constructor(container: any, card: ICard, isReport:boolean= false, btnNext: HTMLButtonElement
     , btnAdd: HTMLButtonElement
@@ -82,6 +83,18 @@ export default class Card {
     return cardType.cardTypes;
   }
 
+  get directionTypeCls() {
+    if (this.directionType == 0){
+      return "horizontal"
+    }
+    else{
+      if(this.card.cardType == "message"){
+        return ""
+      }
+      return "vertical"
+    }
+  }
+
   getAnswerNodeUniqueId(answer: ICardAnswer) {
     return `answer-node-${this.card.uniqueId}-${answer.id}`;
   }
@@ -108,7 +121,6 @@ export default class Card {
   }
 
   async render() {
-    logger.log('Card:render');
     this.renderHTML();
     this.registerDeleteCardEvent();
     this.registerEditCardEvent();
@@ -116,21 +128,34 @@ export default class Card {
   }
 
   renderHTML() {
+    let bgTitle = ""
+    if(this.card.cardType  == "message"){
+      bgTitle ="message-card"
+    }
+    else if (this.card.cardType == "goal"){
+      bgTitle ="goal-card"
+    }
+    else{
+      bgTitle = "question-card"
+    }
     const html = `
-      <div class="sgbmk__card__title" id="${this.moveControlElementId}">
-        <span class="sgbmk__card__title__badge">${this.card.titleBadge}</span>
-        ${this.card.title}<br>
-        ${this.card.displayId}
-      </div>
-      <div class="sgbmk__card__answers">
-        ${this.renderAnswers()}
-        ${this.renderTotalUsers()}
-      </div>
-      <div class="sgbmk__card__actions">
+      <div class="sgbmk__card__title ${bgTitle}" id="${this.moveControlElementId}">
+       <div class="sgbmk__card__title__header"> <span class="sgbmk__card__title__badge">${this.card.titleBadge}</span>
+       ${this.card.title}<br>
+       ${this.card.displayId}
+       </div>
+        <div class="sgbmk__card__actions">
         ${this.renderDeleteButton()}
         ${this.renderEditButton()}
         ${this.renderAddNextButton()}
       </div>
+      </div>
+
+      <div class="sgbmk__card__answers sgbmk__card__answers__${this.directionTypeCls}">
+        ${this.renderAnswers()}
+        ${this.renderTotalUsers()}
+      </div>
+
       ${this.renderCardNodes()}
     `;
 
@@ -187,12 +212,12 @@ export default class Card {
       const answer = this.card.answers[i];
       const css = this.getcssRedColorNotSelected(answer.id)
       html += `
-        <div class="sgbmk__card__answers__item">
+        <div class="sgbmk__card__answers__item sgbmk__card__answers__item__${this.directionTypeCls}">
           <div class="sgbmk__card__answers__item__title sgbmk-ellipsis"
           id="${this.getAnswerNodeUniqueId(answer)}"
           data-card-unique-id="${this.card.uniqueId}"
           data-answer-id="${answer.id}">${answer.title}</div>
-          <div class="sgbmk__card__answers__item__node sgbmk-node ${css}"
+          <div class="sgbmk__card__answers__item__node sgbmk-node sgbmk-node__${this.directionTypeCls} ${css}"
           data-card-unique-id="${this.card.uniqueId}"
           data-answer-id="${answer.id}"
           id="${this.getAnswerNodeUniqueId(answer)}">

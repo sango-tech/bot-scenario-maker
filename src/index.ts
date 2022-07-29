@@ -15,6 +15,7 @@ export class ChatBotFlowsMaker {
   btnAdd:HTMLButtonElement
   btnEdit:HTMLButtonElement
   btnDelete:HTMLButtonElement
+  directionType = 0;
   currentZoom = 100;
 
   constructor(container: any, isReadOnly:boolean=false, btnNext:HTMLButtonElement
@@ -52,15 +53,15 @@ export class ChatBotFlowsMaker {
   };
 
   render = () => {
-    renderer.render(this.isReadOnly);
+    renderer.render(this.isReadOnly, this.directionType);
     bus.onDeleteCard((uniqueId: string) => {
       cardObjects.removeCard(uniqueId);
-      renderer.render(this.isReadOnly);
+      renderer.render(this.isReadOnly, this.directionType);
     });
   };
 
   reRender() {
-    renderer.render(this.isReadOnly);
+    renderer.render(this.isReadOnly, this.directionType);
   }
 
   onCardEdit = (callback: Function) => {
@@ -93,5 +94,10 @@ export class ChatBotFlowsMaker {
 
   setBoundingClientRectBeforeZoom = (rect:any) => {
     mouseDrawer.setBoundingClientRectBeforeZoom(rect);
+  };
+
+  setDirectionType = (value:number) => {
+    this.directionType = value;
+    mouseDrawer.setDirectionType(value)
   };
 }

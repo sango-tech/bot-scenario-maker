@@ -13,6 +13,7 @@ class MouseDrawer {
   isRegisteredClickEvent = false
   isReport:boolean = false
   boundingClientRectBeforeZoom:any
+  directionType = 0
 
   get endMovingNodeId() {
     return 'sgbmk-end-moving-node';
@@ -21,6 +22,10 @@ class MouseDrawer {
   get movingNodeCls() {
     return 'sgbmk-draw-moving-node';
   }
+
+  setDirectionType = (value:number) => {
+    this.directionType = value;
+  };
 
   setBoundingClientRectBeforeZoom = (rect:any) => {
     this.boundingClientRectBeforeZoom = rect;
@@ -175,7 +180,12 @@ class MouseDrawer {
     if(!nodeIndex){
       endNodeEl  = parentNode
       nextUniqueId = parentNode.id
-      nodeIndex = "7"
+      if(this.directionType == 0){
+        nodeIndex = "7"
+      }
+      else{
+        nodeIndex = "1"
+      }
     }
 
     if (!nextUniqueId || !nodeIndex) {

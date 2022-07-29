@@ -46,7 +46,7 @@
     $card: &;
     position: absolute;
     min-width: 100px;
-    max-width: 230px;
+    // max-width: 230px;
     background: #d8d8d8;
     &.active {
       z-index: 1000;
@@ -61,14 +61,20 @@
     }
     &__title {
       padding: 8px;
-      background: #5b5b5b;
+      // background: #5b5b5b;
       color: #fff;
+      &__header{
+        float: left;
+      }
       &__badge {
         background: #fff;
         color: #5b5b5b;
       }
     }
     &__answers {
+      &__vertical{
+        display: table;
+      }
       &__item {
         padding: 2px 5px;
         background: #8e8e8e;
@@ -79,6 +85,11 @@
         align-items: center;
         &__title {
           flex: 1;
+        }
+
+        &__vertical{
+          display: table;
+          float: left;
         }
       }
     }
@@ -92,6 +103,9 @@
       position: absolute;
       background: cornflowerblue;
       opacity: 0;
+      &__vertical{
+        margin-left: 45%;
+      }
       &--0 {
         left: -5px;
         top: -5px;
@@ -149,4 +163,14 @@
 }
 svg *{
   pointer-events:auto;
+}
+
+.message-card {
+  background: gray;
+}
+.question-card {
+  background:#FFC20E;
+}
+.goal-card {
+  background:  CADETBLUE;
 }

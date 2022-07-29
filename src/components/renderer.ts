@@ -5,10 +5,11 @@ class Renderer {
   callbackOnEditCard!: Function;
   callbackOnDeleteCard!: Function;
   callbackOnAddNext!: Function;
-  render = (isReport:boolean) => {
+  render = (isReport:boolean, directionType: number) => {
     this.removeAllCards();
     for (const cardObject of cardObjects.items) {
       cardObject.isReport = isReport;
+      cardObject.directionType = directionType
       cardObject.render();
     }
 
