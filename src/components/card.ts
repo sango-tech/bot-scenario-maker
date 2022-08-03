@@ -218,7 +218,6 @@ export default class Card {
       html += `
         <div class="sgbmk__card__answers__item sgbmk__card__answers__item__${this.directionTypeCls}">
           <div class="sgbmk__card__answers__item__title sgbmk-ellipsis"
-          id="${this.getAnswerNodeUniqueId(answer)}"
           data-card-unique-id="${this.card.uniqueId}"
           data-answer-id="${answer.id}">${answer.title}</div>
           <div class="sgbmk__card__answers__item__node sgbmk-node sgbmk-node__${this.directionTypeCls} ${css}"
