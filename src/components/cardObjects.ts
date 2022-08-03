@@ -233,8 +233,6 @@ class CardObjects {
     const card = this.items.find((item) => item.uniqueId === uniqueId);
     const fromNode = document.getElementById(uniqueId);
     const nodes = fromNode?.querySelectorAll(".sgbmk__card__answers__item__node")
-    console.log(nodes, "nodes");
-
     nodes?.forEach(el =>{
       el.classList.remove("sgbmk-node-not-select")
       const fromAnswerId = el.getAttribute('data-answer-id');
