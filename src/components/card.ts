@@ -12,7 +12,7 @@ export default class Card {
   btnAdd:HTMLButtonElement
   btnEdit:HTMLButtonElement
   btnDelete:HTMLButtonElement
-  directionType = 0
+  directionType = 1
 
   constructor(container: any, card: ICard, isReport:boolean= false, btnNext: HTMLButtonElement
     , btnAdd: HTMLButtonElement

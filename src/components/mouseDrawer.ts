@@ -13,7 +13,7 @@ class MouseDrawer {
   isRegisteredClickEvent = false
   isReport:boolean = false
   boundingClientRectBeforeZoom:any
-  directionType = 0
+  directionType = 1
 
   get endMovingNodeId() {
     return 'sgbmk-end-moving-node';
