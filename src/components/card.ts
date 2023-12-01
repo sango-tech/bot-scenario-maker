@@ -212,7 +212,18 @@ export default class Card {
       return html;
     }
 
-    for (let i = 0; i < this.card.answers.length; i++) {
+    const any = this.card.answers[0];
+    const anyCss = this.getcssRedColorNotSelected(any.id)
+    html += `
+      <div class="sgbmk__card__answers__item__any sgbmk__card__answers__item__${this.directionTypeCls}">
+        <div class="sgbmk__card__answers__item__group">
+          <div class="sgbmk__card__answers__item__any-title sgbmk-ellipsis"
+          data-card-unique-id="${this.card.uniqueId}"
+          data-answer-id="${any.id}">${any.title}</div>
+          <div>
+    `;
+
+    for (let i = 1; i < this.card.answers.length; i++) {
       const answer = this.card.answers[i];
       const css = this.getcssRedColorNotSelected(answer.id)
       html += `
@@ -228,6 +239,19 @@ export default class Card {
         </div>
       `;
     }
+
+    html += `
+          </div>
+        </div>
+        <div class="sgbmk__card__answers__item__any-node">
+          <div class="sgbmk__card__answers__item__node sgbmk-node sgbmk-node__${this.directionTypeCls} ${anyCss}"
+            data-card-unique-id="${this.card.uniqueId}"
+            data-answer-id="${any.id}"
+            id="${this.getAnswerNodeUniqueId(any)}">
+          </div>
+        </div>
+      </div>
+    `;
 
     return html;
   }

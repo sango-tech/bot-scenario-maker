@@ -87,6 +87,28 @@
         &__title {
           flex: 1;
         }
+        &__any {
+          display: flex;
+          justify-content: space-between;
+          align-items: stretch;
+        }
+        &__group {
+          flex: 1;
+        }
+        &__any-title {
+          padding: 2px 5px;
+          background: #8e8e8e;
+          border: 3px #8e8e8e solid;
+          color: #fff;
+          margin: 8px 0 8px 8px;
+        }
+        &__any-node {
+          margin: 8px 8px 8px 0;
+          background: #8e8e8e;
+          border: 6px #8e8e8e solid;
+          display: flex;
+          align-items: center;
+        }
 
         &__vertical{
           display: table;
