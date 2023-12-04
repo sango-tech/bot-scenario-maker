@@ -142,6 +142,14 @@ export default class Card {
     if(this.isReport){
       flex ="display-flex"
     }
+
+    let htmlAnswer = ""
+    if (this.directionType == 1){
+      htmlAnswer = this.renderAnswersVertical()
+    }else{
+      htmlAnswer = this.renderAnswersHorizontal()
+    }
+
     const html = `
       <div class="sgbmk__card__title ${bgTitle} ${flex}" id="${this.moveControlElementId}">
        <div class="sgbmk__card__title__header"> <span class="sgbmk__card__title__badge">${this.card.titleBadge}</span>
@@ -156,7 +164,7 @@ export default class Card {
       </div>
 
       <div class="sgbmk__card__answers sgbmk__card__answers__${this.directionTypeCls}">
-        ${this.renderAnswers()}
+        ${htmlAnswer}
         ${this.renderTotalUsers()}
       </div>
 
@@ -206,7 +214,7 @@ export default class Card {
      return css
   }
 
-  renderAnswers() {
+  renderAnswersHorizontal() {
     let html = '';
     if (!this.card.answers || !this.card.answers.length) {
       return html;
@@ -255,6 +263,34 @@ export default class Card {
 
     return html;
   }
+
+
+  renderAnswersVertical() {
+    let html = '';
+    if (!this.card.answers || !this.card.answers.length) {
+      return html;
+    }
+
+    for (let i = 0; i < this.card.answers.length; i++) {
+      const answer = this.card.answers[i];
+      const css = this.getcssRedColorNotSelected(answer.id)
+      html += `
+        <div class="sgbmk__card__answers__item sgbmk__card__answers__item__${this.directionTypeCls}">
+          <div class="sgbmk__card__answers__item__title sgbmk-ellipsis"
+          data-card-unique-id="${this.card.uniqueId}"
+          data-answer-id="${answer.id}">${answer.title}</div>
+          <div class="sgbmk__card__answers__item__node sgbmk-node sgbmk-node__${this.directionTypeCls} ${css}"
+          data-card-unique-id="${this.card.uniqueId}"
+          data-answer-id="${answer.id}"
+          id="${this.getAnswerNodeUniqueId(answer)}">
+          </div>
+        </div>
+      `;
+    }
+
+    return html;
+  }
+
 
   renderTotalUsers() {
     let html = '';
