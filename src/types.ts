@@ -26,6 +26,7 @@ export interface ICard {
   top: number;
   answers: ICardAnswer[];
   totalUsers: number;
+  labelTotalUsers: string;
 }
 
 export interface IDrawClickedNodeFrom {

@@ -1,30 +1,34 @@
 import { ICard, ICardAnswer } from '../types';
 import { debouce } from '../utils/helper';
-import logger from '../utils/logger';
 import bus from './bus';
 import cardType from './cardType';
 
 export default class Card {
   card!: ICard;
   container!: any;
-  isReport:boolean
-  btnNext:HTMLButtonElement
-  btnAdd:HTMLButtonElement
-  btnEdit:HTMLButtonElement
-  btnDelete:HTMLButtonElement
-  directionType = 1
+  isReport: boolean;
+  btnNext: HTMLButtonElement;
+  btnAdd: HTMLButtonElement;
+  btnEdit: HTMLButtonElement;
+  btnDelete: HTMLButtonElement;
+  directionType = 1;
 
-  constructor(container: any, card: ICard, isReport:boolean= false, btnNext: HTMLButtonElement
-    , btnAdd: HTMLButtonElement
-    , btnEdit: HTMLButtonElement
-    , btnDelete: HTMLButtonElement) {
+  constructor(
+    container: any,
+    card: ICard,
+    isReport: boolean = false,
+    btnNext: HTMLButtonElement,
+    btnAdd: HTMLButtonElement,
+    btnEdit: HTMLButtonElement,
+    btnDelete: HTMLButtonElement,
+  ) {
     this.container = container;
     this.card = card;
-    this.isReport = isReport
-    this.btnNext = btnNext
-    this.btnAdd = btnAdd
-    this.btnEdit = btnEdit
-    this.btnDelete = btnDelete
+    this.isReport = isReport;
+    this.btnNext = btnNext;
+    this.btnAdd = btnAdd;
+    this.btnEdit = btnEdit;
+    this.btnDelete = btnDelete;
   }
 
   get uniqueId() {
@@ -84,14 +88,13 @@ export default class Card {
   }
 
   get directionTypeCls() {
-    if (this.directionType == 0){
-      return "horizontal"
-    }
-    else{
-      if(this.card.cardType == "message"){
-        return ""
+    if (this.directionType == 0) {
+      return 'horizontal';
+    } else {
+      if (this.card.cardType == 'message') {
+        return '';
       }
-      return "vertical"
+      return 'vertical';
     }
   }
 
@@ -124,30 +127,28 @@ export default class Card {
     this.renderHTML();
     this.registerDeleteCardEvent();
     this.registerEditCardEvent();
-    this.registerAddCardEvent()
+    this.registerAddCardEvent();
   }
 
   renderHTML() {
-    let bgTitle = ""
-    if(this.card.cardType  == "message"){
-      bgTitle ="message-card"
+    let bgTitle = '';
+    if (this.card.cardType == 'message') {
+      bgTitle = 'message-card';
+    } else if (this.card.cardType == 'goal') {
+      bgTitle = 'goal-card';
+    } else {
+      bgTitle = 'question-card';
     }
-    else if (this.card.cardType == "goal"){
-      bgTitle ="goal-card"
-    }
-    else{
-      bgTitle = "question-card"
-    }
-    let flex = ""
-    if(this.isReport){
-      flex ="display-flex"
+    let flex = '';
+    if (this.isReport) {
+      flex = 'display-flex';
     }
 
-    let htmlAnswer = ""
-    if (this.directionType == 1){
-      htmlAnswer = this.renderAnswersVertical()
-    }else{
-      htmlAnswer = this.renderAnswersHorizontal()
+    let htmlAnswer = '';
+    if (this.directionType == 1) {
+      htmlAnswer = this.renderAnswersVertical();
+    } else {
+      htmlAnswer = this.renderAnswersHorizontal();
     }
 
     const html = `
@@ -181,37 +182,37 @@ export default class Card {
     this.container.appendChild(cardEl);
   }
 
-  getcssRedColorNotSelected(id:string){
-    let css = ""
-    if (id == "any"){
-      return css
+  getcssRedColorNotSelected(id: string) {
+    let css = '';
+    if (id == 'any') {
+      return css;
     }
 
-    let isAnswer = false
+    let isAnswer = false;
     for (let i = 0; i < this.card.answers.length; i++) {
       const answer = this.card.answers[i];
-      if(answer.nextCards.length > 0 && answer.id == "any"){
-        return css
+      if (answer.nextCards.length > 0 && answer.id == 'any') {
+        return css;
       }
 
-      if(answer.nextCards.length > 0){
-        isAnswer = true
-        break
+      if (answer.nextCards.length > 0) {
+        isAnswer = true;
+        break;
       }
     }
 
-    if(!isAnswer){
-      return css
+    if (!isAnswer) {
+      return css;
     }
 
     for (let i = 0; i < this.card.answers.length; i++) {
       const answer = this.card.answers[i];
-      if(answer.nextCards.length <= 0 && answer.id == id){
-        css = "sgbmk-node-not-select"
+      if (answer.nextCards.length <= 0 && answer.id == id) {
+        css = 'sgbmk-node-not-select';
       }
     }
 
-     return css
+    return css;
   }
 
   renderAnswersHorizontal() {
@@ -221,7 +222,7 @@ export default class Card {
     }
 
     const any = this.card.answers[0];
-    const anyCss = this.getcssRedColorNotSelected(any.id)
+    const anyCss = this.getcssRedColorNotSelected(any.id);
     html += `
       <div class="sgbmk__card__answers__item__any sgbmk__card__answers__item__${this.directionTypeCls}">
         <div class="sgbmk__card__answers__item__group">
@@ -233,7 +234,7 @@ export default class Card {
 
     for (let i = 1; i < this.card.answers.length; i++) {
       const answer = this.card.answers[i];
-      const css = this.getcssRedColorNotSelected(answer.id)
+      const css = this.getcssRedColorNotSelected(answer.id);
       html += `
         <div class="sgbmk__card__answers__item sgbmk__card__answers__item__${this.directionTypeCls}">
           <div class="sgbmk__card__answers__item__title sgbmk-ellipsis"
@@ -264,7 +265,6 @@ export default class Card {
     return html;
   }
 
-
   renderAnswersVertical() {
     let html = '';
     if (!this.card.answers || !this.card.answers.length) {
@@ -273,7 +273,7 @@ export default class Card {
 
     for (let i = 0; i < this.card.answers.length; i++) {
       const answer = this.card.answers[i];
-      const css = this.getcssRedColorNotSelected(answer.id)
+      const css = this.getcssRedColorNotSelected(answer.id);
       html += `
         <div class="sgbmk__card__answers__item sgbmk__card__answers__item__${this.directionTypeCls}">
           <div class="sgbmk__card__answers__item__title sgbmk-ellipsis"
@@ -291,16 +291,14 @@ export default class Card {
     return html;
   }
 
-
   renderTotalUsers() {
     let html = '';
-    if(!this.isReport)
-    {
+    if (!this.isReport) {
       return html;
     }
     html += `
         <div class="sgbmk__card__answers__item sgbmk-total-user">
-          <div class="sgbmk__card__answers__item__title sgbmk-ellipsis">${this.card.totalUsers} users</div>
+          <div class="sgbmk__card__answers__item__title sgbmk-ellipsis">${this.card.totalUsers} ${this.card.labelTotalUsers}</div>
         </div>
       `;
 
@@ -331,7 +329,6 @@ export default class Card {
     }, 500);
   };
 
-
   registerDeleteCardEvent = () => {
     const that = this;
     debouce(() => {
@@ -355,11 +352,10 @@ export default class Card {
   };
 
   renderEditButton() {
-    if(this.isReport)
-    {
+    if (this.isReport) {
       return '';
     }
-    const btn = this.btnEdit.cloneNode(true) as HTMLButtonElement
+    const btn = this.btnEdit.cloneNode(true) as HTMLButtonElement;
     return `
       <a id="${this.editButtonId}" class="sgbmk-btn" data-unique-id="${this.uniqueId}">
       ${btn.outerHTML}
@@ -368,11 +364,10 @@ export default class Card {
   }
 
   renderDeleteButton() {
-    if(this.isReport)
-    {
+    if (this.isReport) {
       return '';
     }
-    const btn = this.btnDelete.cloneNode(true) as HTMLButtonElement
+    const btn = this.btnDelete.cloneNode(true) as HTMLButtonElement;
     return `
       <a id="${this.deleteButtonId}" class="sgbmk-btn" data-unique-id="${this.uniqueId}">
       ${btn.outerHTML}
@@ -385,12 +380,11 @@ export default class Card {
       return '';
     }
 
-    if(this.isReport)
-    {
+    if (this.isReport) {
       return '';
     }
 
-    const btn = this.btnAdd.cloneNode(true) as HTMLButtonElement
+    const btn = this.btnAdd.cloneNode(true) as HTMLButtonElement;
 
     return `
       <a id="${this.addNextButtonId}" class="sgbmk-btn sgbmk-btn-add" data-unique-id="${this.uniqueId}">

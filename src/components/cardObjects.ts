@@ -37,7 +37,7 @@ class CardObjects {
   };
 
   removeAllCards() {
-    this.items = []
+    this.items = [];
     this.triggerChanged();
   }
 
@@ -97,23 +97,26 @@ class CardObjects {
           });
 
           this.addLine(lineId, line);
-          if(cardObject.isReport){
-            this.renderTotalUsers(lineId, answer)
-          }else{
-            this.lines[lineId].endLabel = (LeaderLine as any).pathLabel('×')
+          if (cardObject.isReport) {
+            this.renderTotalUsers(lineId, answer);
+          } else {
+            this.lines[lineId].endLabel = (LeaderLine as any).pathLabel('×');
             this.registerLineRemoveEvent(lineId, cardObject.uniqueId, answer.id, nextCard.uniqueId);
           }
 
-          this.registerLineHoverEvent(lineId)
+          this.registerLineHoverEvent(lineId);
         }
       }
     }
   };
 
   initDraggableCards = () => {
-    if(this.container){
+    if (this.container) {
       for (const cardObject of this.items) {
         const moveEL = cardObject.el;
+        if (moveEL == null) {
+          continue;
+        }
         new PlainDraggable(moveEL, {
           handle: cardObject.moveControlEl,
           autoScroll: false,
@@ -121,12 +124,12 @@ class CardObjects {
             this.rePosition();
           },
           onDragEnd: () => {
-            if(moveEL){
+            if (moveEL) {
               // https://stackoverflow.com/questions/49495151/how-to-get-transform-value-of-html-element-in-angular-5
               var style = window.getComputedStyle(moveEL);
               var matrix = new WebKitCSSMatrix(style.webkitTransform);
-              const left = moveEL.offsetLeft + matrix.m41
-              const top = moveEL.offsetTop + matrix.m42
+              const left = moveEL.offsetLeft + matrix.m41;
+              const top = moveEL.offsetTop + matrix.m42;
               cardObject.setPos(left, top);
               this.triggerChanged();
             }
@@ -144,30 +147,30 @@ class CardObjects {
 
     lineEl?.addEventListener('mouseover', function () {
       const currentLine = that.lines[lineId];
-      currentLine.color= "#266ff8"
+      currentLine.color = '#266ff8';
     });
     lineEl?.addEventListener('mouseout', function () {
       const currentLine = that.lines[lineId];
-      currentLine.color= "coral"
+      currentLine.color = 'coral';
     });
   };
 
-  renderTotalUsers = (lineId: string,  answer:ICardAnswer) => {
-    if( answer.totalUsers <= 0){
+  renderTotalUsers = (lineId: string, answer: ICardAnswer) => {
+    if (answer.totalUsers <= 0) {
       return;
     }
-    const totalUsers = `${answer.totalUsers} users`
-    this.lines[lineId].startLabel = (LeaderLine as any).captionLabel(totalUsers)
+    const totalUsers = `${answer.totalUsers} users`;
+    this.lines[lineId].startLabel = (LeaderLine as any).captionLabel(totalUsers);
 
-    const svg = document.getElementById(lineId)
-    const texts = svg?.querySelectorAll('text:not(.leader-line-end-label)')
-    if (texts && texts.length >1){
-      const middleLabel = texts[0] as SVGTextElement
-      const startLabel = texts[1] as SVGTextElement
-      const y = (parseInt(middleLabel.getAttribute("y")??"0") + 20).toString() + "px"
-      const x = (parseInt(middleLabel.getAttribute("x")??"0")).toString() + "px"
-      startLabel.setAttribute("y", y)
-      startLabel.setAttribute("x", x)
+    const svg = document.getElementById(lineId);
+    const texts = svg?.querySelectorAll('text:not(.leader-line-end-label)');
+    if (texts && texts.length > 1) {
+      const middleLabel = texts[0] as SVGTextElement;
+      const startLabel = texts[1] as SVGTextElement;
+      const y = (parseInt(middleLabel.getAttribute('y') ?? '0') + 20).toString() + 'px';
+      const x = parseInt(middleLabel.getAttribute('x') ?? '0').toString() + 'px';
+      startLabel.setAttribute('y', y);
+      startLabel.setAttribute('x', x);
     }
   };
 
@@ -190,7 +193,7 @@ class CardObjects {
         return item;
       });
 
-      that.setRedColorNotSelected(uniqueId)
+      that.setRedColorNotSelected(uniqueId);
       that.triggerChanged();
     });
   };
@@ -229,18 +232,18 @@ class CardObjects {
     return this.items.find((item) => item.uniqueId === uniqueId);
   };
 
-  setRedColorNotSelected(uniqueId:string){
+  setRedColorNotSelected(uniqueId: string) {
     const card = this.items.find((item) => item.uniqueId === uniqueId);
     const fromNode = document.getElementById(uniqueId);
-    const nodes = fromNode?.querySelectorAll(".sgbmk__card__answers__item__node")
-    nodes?.forEach(el =>{
-      el.classList.remove("sgbmk-node-not-select")
+    const nodes = fromNode?.querySelectorAll('.sgbmk__card__answers__item__node');
+    nodes?.forEach((el) => {
+      el.classList.remove('sgbmk-node-not-select');
       const fromAnswerId = el.getAttribute('data-answer-id');
-      const css = card?.getcssRedColorNotSelected(fromAnswerId??"")
-      if (css != "") {
-        el.classList.add(css??"")
+      const css = card?.getcssRedColorNotSelected(fromAnswerId ?? '');
+      if (css != '') {
+        el.classList.add(css ?? '');
       }
-    })
+    });
   }
 }
 
