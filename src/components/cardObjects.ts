@@ -98,7 +98,7 @@ class CardObjects {
 
           this.addLine(lineId, line);
           if (cardObject.isReport) {
-            this.renderTotalUsers(lineId, answer);
+            this.renderTotalUsers(cardObject, lineId, answer);
           } else {
             this.lines[lineId].endLabel = (LeaderLine as any).pathLabel('×');
             this.registerLineRemoveEvent(lineId, cardObject.uniqueId, answer.id, nextCard.uniqueId);
@@ -155,11 +155,11 @@ class CardObjects {
     });
   };
 
-  renderTotalUsers = (lineId: string, answer: ICardAnswer) => {
+  renderTotalUsers = (item: Card, lineId: string, answer: ICardAnswer) => {
     if (answer.totalUsers <= 0) {
       return;
     }
-    const totalUsers = `${answer.totalUsers} users`;
+    const totalUsers = `${answer.totalUsers} ${item.card.labelTotalUsers}`;
     this.lines[lineId].startLabel = (LeaderLine as any).captionLabel(totalUsers);
 
     const svg = document.getElementById(lineId);
