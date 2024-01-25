@@ -293,7 +293,7 @@ export default class Card {
 
   renderTotalUsers() {
     let html = '';
-    if (!this.isReport) {
+    if (!this.isReport || this.card.cardType == 'start') {
       return html;
     }
     html += `
