@@ -91,7 +91,7 @@ export default class Card {
     if (this.directionType == 0) {
       return 'horizontal';
     } else {
-      if (this.card.cardType == 'message') {
+      if (this.card.cardType == 'message' || this.card.cardType == 'start') {
         return '';
       }
       return 'vertical';
