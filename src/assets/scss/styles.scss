@@ -25,7 +25,7 @@
   }
   &-btn {
     border-radius: 100%;
-    padding: 5px;
+    padding: 2px;
     cursor: pointer;
     &:hover {
       svg {
@@ -60,16 +60,26 @@
       }
     }
     &__title {
-      padding: 8px;
+      padding: 2px;
       display: block;
       // background: #5b5b5b;
       color: #fff;
       &__header{
-        float: left;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
       }
       &__badge {
-        background: #fff;
-        color: #5b5b5b;
+        padding-left: 44px;
+        color: #fff;
+      }
+      &__footer {
+        font-size: 20px;
+        display: flex;
+        gap: 8px;
+        padding-left: 12px;
+        padding-bottom: 8px;
       }
     }
     &__answers {
@@ -119,8 +129,7 @@
     &__actions {
       display: flex;
       justify-content: end;
-      gap: 4px;
-      padding: 5px 10px;
+      gap: 2px;
     }
     &__node {
       position: absolute;
@@ -172,6 +181,11 @@
     position: relative;
     z-index: 1;
   }
+
+  &-icon {
+    display: flex;
+    align-items: center;
+  }
 }
 .leader-line{
   z-index: 0;
@@ -188,6 +202,9 @@ svg *{
   pointer-events:auto;
 }
 
+.start-card {
+  background: #1976d2;
+}
 .message-card {
   background: gray;
 }
@@ -199,4 +216,14 @@ svg *{
 }
 .display-flex{
   display: flex !important;
+}
+
+.sgbmk-btn .q-icon {
+  font-size: 1.25em;
+}
+
+.sgbmk-icon i {
+  padding: 4px;
+  border: 1px solid;
+  border-radius: 6px;
 }

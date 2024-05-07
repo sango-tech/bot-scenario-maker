@@ -11,6 +11,10 @@ export default class Card {
   btnAdd: HTMLButtonElement;
   btnEdit: HTMLButtonElement;
   btnDelete: HTMLButtonElement;
+  iconStart: HTMLElement;
+  iconMessage: HTMLElement;
+  iconQuestion: HTMLElement;
+  iconGoal: HTMLElement;
   directionType = 1;
 
   constructor(
@@ -21,6 +25,10 @@ export default class Card {
     btnAdd: HTMLButtonElement,
     btnEdit: HTMLButtonElement,
     btnDelete: HTMLButtonElement,
+    iconStart: HTMLElement,
+    iconMessage: HTMLElement,
+    iconQuestion: HTMLElement,
+    iconGoal: HTMLElement,
   ) {
     this.container = container;
     this.card = card;
@@ -29,6 +37,10 @@ export default class Card {
     this.btnAdd = btnAdd;
     this.btnEdit = btnEdit;
     this.btnDelete = btnDelete;
+    this.iconStart = iconStart;
+    this.iconMessage = iconMessage;
+    this.iconQuestion = iconQuestion;
+    this.iconGoal = iconGoal;
   }
 
   get uniqueId() {
@@ -132,12 +144,19 @@ export default class Card {
 
   renderHTML() {
     let bgTitle = '';
-    if (this.card.cardType == 'message') {
+    let icon = ''
+    if (this.card.cardType == 'start') {
+      bgTitle = 'start-card';
+      icon = this.renderStartIcon();
+    } else if (this.card.cardType == 'message') {
       bgTitle = 'message-card';
+      icon = this.renderMessageIcon();
     } else if (this.card.cardType == 'goal') {
       bgTitle = 'goal-card';
+      icon = this.renderGoalIcon();
     } else {
       bgTitle = 'question-card';
+      icon = this.renderQuestionIcon();
     }
     let flex = '';
     if (this.isReport) {
@@ -153,15 +172,20 @@ export default class Card {
 
     const html = `
       <div class="sgbmk__card__title ${bgTitle} ${flex}" id="${this.moveControlElementId}">
-       <div class="sgbmk__card__title__header"> <span class="sgbmk__card__title__badge">${this.card.titleBadge}</span>
-       ${this.card.title}<br>
-       ${this.card.displayId}
+       <div class="sgbmk__card__title__header">
+         <div class="sgbmk__card__title__badge">
+          ${this.card.titleBadge}
+         </div>
+         <div class="sgbmk__card__actions">
+            ${this.renderDeleteButton()}
+            ${this.renderEditButton()}
+            ${this.renderAddNextButton()}
+          </div>
        </div>
-        <div class="sgbmk__card__actions">
-        ${this.renderDeleteButton()}
-        ${this.renderEditButton()}
-        ${this.renderAddNextButton()}
-      </div>
+       <div class="sgbmk__card__title__footer">
+        ${icon}
+        ${this.card.title}
+       </div>
       </div>
 
       <div class="sgbmk__card__answers sgbmk__card__answers__${this.directionTypeCls}">
@@ -293,7 +317,7 @@ export default class Card {
 
   renderTotalUsers() {
     let html = '';
-    if (!this.isReport || this.card.cardType == 'start') {
+    if (!this.isReport) {
       return html;
     }
     html += `
@@ -372,6 +396,34 @@ export default class Card {
       <a id="${this.deleteButtonId}" class="sgbmk-btn" data-unique-id="${this.uniqueId}">
       ${btn.outerHTML}
       </a>
+    `;
+  }
+
+  renderStartIcon() {
+    const icon = this.iconStart.cloneNode(true) as HTMLElement;
+    return `
+      <div class="sgbmk-icon">${icon.outerHTML}</div>
+    `;
+  }
+
+  renderMessageIcon() {
+    const icon = this.iconMessage.cloneNode(true) as HTMLElement;
+    return `
+      <div class="sgbmk-icon">${icon.outerHTML}</div>
+    `;
+  }
+
+  renderQuestionIcon() {
+    const icon = this.iconQuestion.cloneNode(true) as HTMLElement;
+    return `
+      <div class="sgbmk-icon">${icon.outerHTML}</div>
+    `;
+  }
+
+  renderGoalIcon() {
+    const icon = this.iconGoal.cloneNode(true) as HTMLElement;
+    return `
+      <div class="sgbmk-icon">${icon.outerHTML}</div>
     `;
   }
 

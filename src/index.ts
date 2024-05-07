@@ -15,13 +15,21 @@ export class ChatBotFlowsMaker {
   btnAdd:HTMLButtonElement
   btnEdit:HTMLButtonElement
   btnDelete:HTMLButtonElement
+  iconStart:HTMLElement
+  iconMessage:HTMLElement
+  iconQuestion:HTMLElement
+  iconGoal:HTMLElement
   directionType = 0;
   currentZoom = 100;
 
   constructor(container: any, isReadOnly:boolean=false, btnNext:HTMLButtonElement
     , btnAdd: HTMLButtonElement
     , btnEdit: HTMLButtonElement
-    , btnDelete: HTMLButtonElement) {
+    , btnDelete: HTMLButtonElement
+    , iconStart: HTMLElement
+    , iconMessage: HTMLElement
+    , iconQuestion: HTMLElement
+    , iconGoal: HTMLElement) {
     logger.debug('Init...');
     this.container = container || document.body;
     this.isReadOnly = isReadOnly
@@ -29,6 +37,10 @@ export class ChatBotFlowsMaker {
     this.btnAdd = btnAdd
     this.btnEdit = btnEdit
     this.btnDelete = btnDelete
+    this.iconStart = iconStart
+    this.iconMessage = iconMessage
+    this.iconQuestion = iconQuestion
+    this.iconGoal = iconGoal
 
     mouseDrawer.setContainer(container);
     cardObjects.setContainer(container);
@@ -37,7 +49,7 @@ export class ChatBotFlowsMaker {
 
   addCard = (item: ICard) => {
     logger.log('Added card', item);
-    const card = new Card(this.container, item, false, this.btnNext, this.btnAdd, this.btnEdit, this.btnDelete);
+    const card = new Card(this.container, item, false, this.btnNext, this.btnAdd, this.btnEdit, this.btnDelete, this.iconStart, this.iconMessage, this.iconQuestion, this.iconGoal);
     cardObjects.addCard(card);
     return this;
   };
