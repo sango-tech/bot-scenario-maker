@@ -184,7 +184,7 @@ export default class Card {
        </div>
        <div class="sgbmk__card__title__footer">
         ${icon}
-        ${this.card.title}
+        ${this.card.title.length > 20 ? this.card.title.slice(0, 20) + '...' : this.card.title }
        </div>
       </div>
 

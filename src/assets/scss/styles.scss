@@ -1,57 +1,70 @@
 .sgbmk {
   $parent: &;
+
   &-total-user {
     border: 3px #31ccec solid !important;
   }
+
   &-ellipsis {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
   }
+
   &-node {
     width: 10px;
     height: 10px;
     background: orange;
     border-radius: 100%;
     cursor: pointer;
+
     &:hover {
       background: red;
       transform: scale(1.2);
     }
+
     &-not-select {
       background: red;
     }
   }
+
   &-btn {
     border-radius: 100%;
     padding: 2px;
     cursor: pointer;
+
     &:hover {
       svg {
         color: grey;
       }
     }
+
     svg {
       height: 15px;
     }
   }
+
   &-draw-moving-node {
     position: absolute;
     opacity: 0;
     width: 1;
     height: 1;
   }
+
   &__card {
     $card: &;
     position: absolute;
     min-width: 200px;
     // max-width: 230px;
     background: #d8d8d8;
+
     &.active {
       z-index: 1000;
     }
+
     &:hover {
+
       // z-index: 1000;
       #{$card} {
         &__node {
@@ -59,33 +72,40 @@
         }
       }
     }
+
     &__title {
       padding: 2px;
       display: block;
       // background: #5b5b5b;
       color: #fff;
-      &__header{
+
+      &__header {
         display: flex;
         flex-direction: row;
         align-items: flex-end;
         justify-content: space-between;
       }
+
       &__badge {
         padding-left: 44px;
         color: #fff;
+        font-size: 10px;
       }
+
       &__footer {
-        font-size: 20px;
+        font-size: 15px;
         display: flex;
         gap: 8px;
         padding-left: 12px;
         padding-bottom: 8px;
       }
     }
+
     &__answers {
-      &__vertical{
+      &__vertical {
         display: table;
       }
+
       &__item {
         padding: 2px 5px;
         background: #8e8e8e;
@@ -94,24 +114,31 @@
         margin: 8px;
         display: flex;
         align-items: center;
+
         &__title {
           flex: 1;
+          font-size: 10px;
         }
+
         &__any {
           display: flex;
           justify-content: space-between;
           align-items: stretch;
         }
+
         &__group {
           flex: 1;
         }
+
         &__any-title {
           padding: 2px 5px;
           background: #8e8e8e;
           border: 3px #8e8e8e solid;
           color: #fff;
           margin: 8px 0 8px 8px;
+          font-size: 10px;
         }
+
         &__any-node {
           margin: 8px 8px 8px 0;
           background: #8e8e8e;
@@ -120,55 +147,66 @@
           align-items: center;
         }
 
-        &__vertical{
+        &__vertical {
           display: table;
           float: left;
         }
       }
     }
+
     &__actions {
       display: flex;
       justify-content: end;
       gap: 2px;
     }
+
     &__node {
       position: absolute;
       background: cornflowerblue;
       opacity: 0;
-      &__vertical{
+
+      &__vertical {
         margin-left: 45%;
       }
+
       &--0 {
         left: -5px;
         top: -5px;
       }
+
       &--1 {
         left: 50%;
         margin-left: -5px;
         top: -5px;
       }
+
       &--2 {
         right: -5px;
         top: -5px;
       }
+
       &--3 {
         right: -5px;
         top: 50%;
         margin-top: -5px;
       }
+
       &--4 {
         right: -5px;
         bottom: -5px;
       }
+
       &--5 {
         left: 50%;
         margin-left: -5px;
         bottom: -5px;
       }
+
       &--6 {
         left: -5px;
         bottom: -5px;
       }
+
       &--7 {
         left: -5px;
         top: 50%;
@@ -187,34 +225,42 @@
     align-items: center;
   }
 }
-.leader-line{
+
+.leader-line {
   z-index: 0;
 }
+
 .leader-line-end-label {
   fill: #999 !important;
   cursor: pointer;
   pointer-events: visible;
+
   &:hover {
     fill: #000 !important;
   }
 }
-svg *{
-  pointer-events:auto;
+
+svg * {
+  pointer-events: auto;
 }
 
 .start-card {
   background: #1976d2;
 }
+
 .message-card {
   background: gray;
 }
+
 .question-card {
-  background:#FFC20E;
+  background: #FFC20E;
 }
+
 .goal-card {
-  background:  CADETBLUE;
+  background: CADETBLUE;
 }
-.display-flex{
+
+.display-flex {
   display: flex !important;
 }
 
