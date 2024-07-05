@@ -376,6 +376,9 @@ export default class Card {
   };
 
   renderEditButton() {
+    if(this.card.isHideEditBtn){
+      return ''
+    }
     if (this.isReport) {
       return '';
     }
@@ -388,6 +391,9 @@ export default class Card {
   }
 
   renderDeleteButton() {
+    if(this.card.isHideDeleteBtn){
+      return ''
+    }
     if (this.isReport) {
       return '';
     }
@@ -428,6 +434,10 @@ export default class Card {
   }
 
   renderAddNextButton() {
+    if(this.card.isHideAddBtn){
+      return ''
+    }
+
     if (!this.cardTypes.length) {
       return '';
     }

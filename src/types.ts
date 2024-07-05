@@ -27,6 +27,9 @@ export interface ICard {
   answers: ICardAnswer[];
   totalUsers: number;
   labelTotalUsers: string;
+  isHideEditBtn?:boolean;
+  isHideAddBtn?:boolean;
+  isHideDeleteBtn?:boolean;
 }
 
 export interface IDrawClickedNodeFrom {
