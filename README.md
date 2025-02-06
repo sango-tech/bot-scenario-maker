@@ -1,6 +1,7 @@
 ## Bot Flows Maker
 
 ## Development
+- Node 16
 
 ```
 $ yarn

@@ -7,6 +7,7 @@ export default class Card {
   card!: ICard;
   container!: any;
   isReport: boolean;
+  isReadOnly: boolean;
   btnNext: HTMLButtonElement;
   btnAdd: HTMLButtonElement;
   btnEdit: HTMLButtonElement;
@@ -20,7 +21,6 @@ export default class Card {
   constructor(
     container: any,
     card: ICard,
-    isReport: boolean = false,
     btnNext: HTMLButtonElement,
     btnAdd: HTMLButtonElement,
     btnEdit: HTMLButtonElement,
@@ -29,10 +29,11 @@ export default class Card {
     iconMessage: HTMLElement,
     iconQuestion: HTMLElement,
     iconGoal: HTMLElement,
+    isReport: boolean = false,
+    isReadOnly: boolean = false,
   ) {
     this.container = container;
     this.card = card;
-    this.isReport = isReport;
     this.btnNext = btnNext;
     this.btnAdd = btnAdd;
     this.btnEdit = btnEdit;
@@ -41,6 +42,8 @@ export default class Card {
     this.iconMessage = iconMessage;
     this.iconQuestion = iconQuestion;
     this.iconGoal = iconGoal;
+    this.isReport = isReport;
+    this.isReadOnly = isReadOnly;
   }
 
   get uniqueId() {
@@ -159,9 +162,9 @@ export default class Card {
       icon = this.renderQuestionIcon();
     }
     let flex = '';
-    if (this.isReport) {
-      flex = 'display-flex';
-    }
+    // if (this.isReport) {
+    //   flex = 'display-flex';
+    // }
 
     let htmlAnswer = '';
     if (this.directionType == 1) {
@@ -317,7 +320,7 @@ export default class Card {
 
   renderTotalUsers() {
     let html = '';
-    if (!this.isReport) {
+    if (!this.isReport || this.isReadOnly) {
       return html;
     }
     html += `
@@ -379,12 +382,13 @@ export default class Card {
     if(this.card.isHideEditBtn){
       return ''
     }
-    if (this.isReport) {
-      return '';
+    let cls = ""
+    if (this.isReport || this.isReadOnly) {
+      cls ="sgbmk-visibility-hidden"
     }
     const btn = this.btnEdit.cloneNode(true) as HTMLButtonElement;
     return `
-      <a id="${this.editButtonId}" class="sgbmk-btn" data-unique-id="${this.uniqueId}">
+      <a id="${this.editButtonId}" class="sgbmk-btn ${cls}" data-unique-id="${this.uniqueId}">
       ${btn.outerHTML}
       </a>
     `;
@@ -394,12 +398,13 @@ export default class Card {
     if(this.card.isHideDeleteBtn){
       return ''
     }
-    if (this.isReport) {
-      return '';
+    let cls = ""
+    if (this.isReport || this.isReadOnly) {
+      cls ="sgbmk-visibility-hidden"
     }
     const btn = this.btnDelete.cloneNode(true) as HTMLButtonElement;
     return `
-      <a id="${this.deleteButtonId}" class="sgbmk-btn" data-unique-id="${this.uniqueId}">
+      <a id="${this.deleteButtonId}" class="sgbmk-btn ${cls}" data-unique-id="${this.uniqueId}">
       ${btn.outerHTML}
       </a>
     `;
@@ -442,14 +447,15 @@ export default class Card {
       return '';
     }
 
-    if (this.isReport) {
-      return '';
+    let cls = ""
+    if (this.isReport || this.isReadOnly) {
+      cls ="sgbmk-visibility-hidden"
     }
 
     const btn = this.btnAdd.cloneNode(true) as HTMLButtonElement;
 
     return `
-      <a id="${this.addNextButtonId}" class="sgbmk-btn sgbmk-btn-add" data-unique-id="${this.uniqueId}">
+      <a id="${this.addNextButtonId}" class="sgbmk-btn sgbmk-btn-add  ${cls}" data-unique-id="${this.uniqueId}">
         ${btn.outerHTML}
       </a>
     `;

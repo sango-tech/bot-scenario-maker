@@ -11,6 +11,7 @@ import renderer from './components/renderer';
 export class ChatBotFlowsMaker {
   container: any;
   isReadOnly:boolean
+  isReport:boolean
   btnNext:HTMLButtonElement
   btnAdd:HTMLButtonElement
   btnEdit:HTMLButtonElement
@@ -22,14 +23,16 @@ export class ChatBotFlowsMaker {
   directionType = 0;
   currentZoom = 100;
 
-  constructor(container: any, isReadOnly:boolean=false, btnNext:HTMLButtonElement
+  constructor(container: any, btnNext:HTMLButtonElement
     , btnAdd: HTMLButtonElement
     , btnEdit: HTMLButtonElement
     , btnDelete: HTMLButtonElement
     , iconStart: HTMLElement
     , iconMessage: HTMLElement
     , iconQuestion: HTMLElement
-    , iconGoal: HTMLElement) {
+    , iconGoal: HTMLElement
+    ,isReport:boolean
+    ,isReadOnly:boolean=false) {
     logger.debug('Init...');
     this.container = container || document.body;
     this.isReadOnly = isReadOnly
@@ -41,6 +44,7 @@ export class ChatBotFlowsMaker {
     this.iconMessage = iconMessage
     this.iconQuestion = iconQuestion
     this.iconGoal = iconGoal
+    this.isReport = isReport
 
     mouseDrawer.setContainer(container);
     cardObjects.setContainer(container);
@@ -49,7 +53,8 @@ export class ChatBotFlowsMaker {
 
   addCard = (item: ICard) => {
     logger.log('Added card', item);
-    const card = new Card(this.container, item, false, this.btnNext, this.btnAdd, this.btnEdit, this.btnDelete, this.iconStart, this.iconMessage, this.iconQuestion, this.iconGoal);
+    const card = new Card(this.container, item, this.btnNext, this.btnAdd, this.btnEdit, this.btnDelete,
+      this.iconStart, this.iconMessage, this.iconQuestion, this.iconGoal, this.isReport, this.isReadOnly);
     cardObjects.addCard(card);
     return this;
   };
@@ -65,15 +70,15 @@ export class ChatBotFlowsMaker {
   };
 
   render = () => {
-    renderer.render(this.isReadOnly, this.directionType);
+    renderer.render(this.isReport, this.directionType, this.isReadOnly);
     bus.onDeleteCard((uniqueId: string) => {
       cardObjects.removeCard(uniqueId);
-      renderer.render(this.isReadOnly, this.directionType);
+      renderer.render(this.isReport, this.directionType, this.isReadOnly);
     });
   };
 
   reRender() {
-    renderer.render(this.isReadOnly, this.directionType);
+    renderer.render(this.isReport, this.directionType, this.isReadOnly);
   }
 
   onCardEdit = (callback: Function) => {
