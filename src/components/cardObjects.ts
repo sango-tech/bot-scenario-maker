@@ -100,8 +100,10 @@ class CardObjects {
           if (cardObject.isReport) {
             this.renderTotalUsers(cardObject, lineId, answer);
           } else {
-            this.lines[lineId].endLabel = (LeaderLine as any).pathLabel('×');
-            this.registerLineRemoveEvent(lineId, cardObject.uniqueId, answer.id, nextCard.uniqueId);
+            if(!cardObject.isReadOnly){
+              this.lines[lineId].endLabel = (LeaderLine as any).pathLabel('×');
+              this.registerLineRemoveEvent(lineId, cardObject.uniqueId, answer.id, nextCard.uniqueId);
+            }
           }
 
           this.registerLineHoverEvent(lineId);

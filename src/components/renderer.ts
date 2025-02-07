@@ -15,9 +15,10 @@ class Renderer {
     }
 
     cardObjects.connectObjectsByLines();
-    cardObjects.initDraggableCards();
-
-    this.registerMouseDrawer(isReport);
+    if (!isReport && !isReadOnly){
+      cardObjects.initDraggableCards();
+      this.registerMouseDrawer(isReport);
+    }
   };
 
   registerMouseDrawer = (isReport:boolean) => {
